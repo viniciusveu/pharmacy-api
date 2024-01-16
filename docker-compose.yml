@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: pharmacy-postgres-container
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: pharmacyDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # nest:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: pharmacy-nest-container
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     DATABASE_URL: postgres://user:pwd@postgres:5432/pharmadb
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - .:/app
+  #   command: "npm run start:dev"
+
+volumes:
+  postgres_data:
