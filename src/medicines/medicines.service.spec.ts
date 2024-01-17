@@ -3,6 +3,7 @@ import { MedicinesService } from './medicines.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Medicine } from './entities/medicine.entity';
 import { CreateMedicineDto } from './dto/create-medicine.dto';
+import { StockService } from '../stock/stock.service';
 
 const medicineToCreate: CreateMedicineDto = {
   name: 'Paracetamol',
@@ -13,6 +14,7 @@ const medicineToCreate: CreateMedicineDto = {
   posology: 'Take one tablet every 8 hours',
   indications: 'Headaches',
   contraindications: 'None',
+  stockQuantity: 10,
 };
 const medicineReturn: Medicine = {
   id: '1',
@@ -24,6 +26,8 @@ const medicineReturn: Medicine = {
   posology: 'Take one tablet every 8 hours',
   indications: 'Headaches',
   contraindications: 'None',
+  groups: [],
+  stock: [],
 };
 
 describe('MedicinesService', () => {
@@ -35,6 +39,9 @@ describe('MedicinesService', () => {
     update: jest.fn(),
     delete: jest.fn(),
   };
+  const mockStockService = {
+    create: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -43,6 +50,10 @@ describe('MedicinesService', () => {
         {
           provide: getRepositoryToken(Medicine),
           useValue: mockMedicineRepository,
+        },
+        {
+          provide: StockService,
+          useValue: mockStockService,
         },
       ],
     }).compile();

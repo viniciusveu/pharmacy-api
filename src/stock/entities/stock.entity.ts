@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Medicine } from '../../medicines/entities/medicine.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Stock {
@@ -8,6 +15,12 @@ export class Stock {
   @Column()
   medicineId: string;
 
-  @Column()
-  amount: number;
+  @Column({ default: 0 })
+  quantity: number;
+
+  @ManyToOne(() => Medicine, (medicine) => medicine.stock, {
+    onDelete: 'CASCADE',
+  })
+  @JoinTable({ name: 'medicineId' })
+  medicine: Medicine;
 }

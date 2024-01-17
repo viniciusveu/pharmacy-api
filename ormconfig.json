@@ -1,10 +1,10 @@
 {
     "type": "postgres",
-    "host": "localhost",
+    "host": "postgres_pharmacy",
     "port": 5432,
-    "username": "user",
-    "password": "pwd",
-    "database": "pharmacyDb",
+    "username": "user_pharmacy",
+    "password": "pwd_pharmacy",
+    "database": "mydb_pharmacy",
     "entities": [
         "dist/**/*.entity{.ts,.js}"
     ],

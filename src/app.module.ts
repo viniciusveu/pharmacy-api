@@ -10,11 +10,11 @@ import { MedicinesModule } from './medicines/medicines.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      port: +process.env.DB_PORT || 5432,
+      port: +process.env.DB_PORT || 54322,
       host: process.env.DB_HOST || 'localhost',
-      username: process.env.DB_USER || 'user',
-      password: process.env.DB_PASSWORD || 'pwd',
-      database: process.env.DB_DATABASE || 'pharmacyDb',
+      username: process.env.DB_USER || 'user_pharmacy',
+      password: process.env.DB_PASSWORD || 'pwd_pharmacy',
+      database: process.env.DB_DATABASE || 'mydb_pharmacy',
       entities: [`${__dirname}/**/*.entity{.ts,.js}`],
       synchronize: true,
     }),

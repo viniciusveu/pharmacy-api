@@ -4,11 +4,12 @@ import { MedicineGroupsService } from './medicine-groups.service';
 
 describe('MedicineGroupsController', () => {
   let controller: MedicineGroupsController;
+  let service: Partial<MedicineGroupsService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MedicineGroupsController],
-      providers: [MedicineGroupsService],
+      providers: [{ provide: MedicineGroupsService, useValue: service }],
     }).compile();
 
     controller = module.get<MedicineGroupsController>(MedicineGroupsController);

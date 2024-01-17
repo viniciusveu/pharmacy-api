@@ -13,6 +13,7 @@ const medicineToCreate: CreateMedicineDto = {
   posology: 'Take one tablet every 8 hours',
   indications: 'Headaches',
   contraindications: 'None',
+  stockQuantity: 10,
 };
 const medicineReturn: Medicine = {
   id: '1',
@@ -24,6 +25,8 @@ const medicineReturn: Medicine = {
   posology: 'Take one tablet every 8 hours',
   indications: 'Headaches',
   contraindications: 'None',
+  groups: [],
+  stock: [],
 };
 const medicineToUpdate: CreateMedicineDto = {
   name: 'Paracetamol',
@@ -34,6 +37,7 @@ const medicineToUpdate: CreateMedicineDto = {
   posology: 'Take one tablet every 8 hours',
   indications: 'Headaches',
   contraindications: 'None',
+  stockQuantity: 20,
 };
 
 describe('MedicinesController', () => {
@@ -59,6 +63,7 @@ describe('MedicinesController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+    expect(service).toBeDefined();
   });
 
   describe('create', () => {

@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateMedicineGroupDto } from './dto/create-medicine-group.dto';
 import { UpdateMedicineGroupDto } from './dto/update-medicine-group.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { MedicineGroup } from './entities/medicine-group.entity';
+import { MedicinesService } from '../medicines/medicines.service';
+import { Medicine } from '../medicines/entities/medicine.entity';
 
 @Injectable()
 export class MedicineGroupsService {
-  create(createMedicineGroupDto: CreateMedicineGroupDto) {
-    return 'This action adds a new medicineGroup';
+  constructor(
+    @InjectRepository(MedicineGroup)
+    private readonly medicineGroupRepository: Repository<MedicineGroup>,
+    private readonly medicinesService: MedicinesService,
+  ) {}
+
+  async create(
+    createMedicineGroupDto: CreateMedicineGroupDto,
+  ): Promise<MedicineGroup> {
+    const { name, medicineIds } = createMedicineGroupDto;
+
+    const existingMedicineGroup = await this.medicineGroupRepository.findOne({
+      where: { name },
+    });
+    if (existingMedicineGroup) {
+      throw new ConflictException('Medicine group already exists');
+    }
+
+    const medicines = await this.checkMedicineIds(medicineIds);
+
+    const medicineGroup = this.medicineGroupRepository.save({
+      name,
+      medicines,
+    });
+
+    return medicineGroup;
   }
 
-  findAll() {
-    return `This action returns all medicineGroups`;
+  async findAll(): Promise<MedicineGroup[]> {
+    return await this.medicineGroupRepository.find({
+      relations: ['medicines', 'medicines.stock'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} medicineGroup`;
+  async findOne(id: string) {
+    return await this.medicineGroupRepository.findOne({
+      where: { id },
+      relations: ['medicines', 'medicines.stock'],
+    });
   }
 
-  update(id: number, updateMedicineGroupDto: UpdateMedicineGroupDto) {
-    return `This action updates a #${id} medicineGroup`;
+  async update(id: string, updateMedicineGroupDto: UpdateMedicineGroupDto) {
+    return await this.medicineGroupRepository.update(
+      { id },
+      updateMedicineGroupDto,
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} medicineGroup`;
+  async remove(id: string) {
+    return await this.medicineGroupRepository.delete({ id });
+  }
+
+  private async checkMedicineIds(medicineIds: string[]): Promise<Medicine[]> {
+    const medicines: Medicine[] = await Promise.all(
+      medicineIds.map(async (medicineId) => {
+        const medicine = await this.medicinesService.findOne(medicineId);
+        return medicine;
+      }),
+    );
+
+    return medicines;
   }
 }

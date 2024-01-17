@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { CreateMedicineDto } from 'src/medicines/dto/create-medicine.dto';
+import { CreateMedicineDto } from '../src/medicines/dto/create-medicine.dto';
 
 const knownUUID = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
 const medicineToCreate: CreateMedicineDto = {
@@ -15,6 +15,7 @@ const medicineToCreate: CreateMedicineDto = {
   posology: 'Take one tablet every 8 hours',
   indications: 'Headaches',
   contraindications: 'None',
+  stockQuantity: 10,
 };
 
 describe('MedicinesController (e2e)', () => {
@@ -27,11 +28,6 @@ describe('MedicinesController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-
-    // Inserir dados iniciais antes dos testes
-    await request(app.getHttpServer())
-      .post('/medicines')
-      .send(medicineToCreate);
   });
 
   it('/medicines (POST)', async () => {

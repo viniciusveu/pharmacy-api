@@ -36,4 +36,8 @@ export class CreateMedicineDto {
   @IsString()
   @IsNotEmpty()
   contraindications: string;
+
+  @IsNumber()
+  @IsOptional()
+  stockQuantity: number;
 }
