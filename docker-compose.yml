@@ -9,24 +9,24 @@ services:
       POSTGRES_PASSWORD: pwd_pharmacy
       POSTGRES_DB: mydb_pharmacy
     ports:
-      - "54322:5432"
+      - "5432:5432"
     volumes:
       - postgres_data_pharmacy:/var/lib/postgresql/data
 
-  nest:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: nest-container_pharmacy
-    depends_on:
-      - postgres_pharmacy
-    environment:
-      DATABASE_URL: postgres://user_pharmacy:pwd_pharmacy@postgres_pharmacy:5432/mydb_pharmacy
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/app_pharmacy
-    command: "npm run start:dev"
+  # nest:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: nest-container_pharmacy
+  #   depends_on:
+  #     - postgres_pharmacy
+  #   environment:
+  #     DATABASE_URL: postgres://user_pharmacy:pwd_pharmacy@postgres_pharmacy:5432/mydb_pharmacy
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - .:/app_pharmacy
+  #   command: "npm run start:dev"
 
 volumes:
   postgres_data_pharmacy:

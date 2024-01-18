@@ -18,4 +18,38 @@ describe('MedicineGroupsController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  describe('create', () => {
+    it('should create a new group', async () => {});
+    it('should throw an error if some medicine does not exist', async () => {});
+    it('should throw an error if group already exists', async () => {});
+  });
+
+  describe('findAll', () => {
+    it('should return all groups', async () => {});
+  });
+
+  describe('findOne', () => {
+    it('should return a group', async () => {});
+  });
+
+  describe('update', () => {
+    it('should update a group', async () => {});
+    it('should throw an error if group name already exists', async () => {});
+  });
+
+  describe('remove', () => {
+    it('should remove a group', async () => {});
+  });
+
+  describe('addMedicinesToGroup', () => {
+    it('should add medications to a group', async () => {});
+    it('should throw an error if group does not exist', async () => {});
+    it('should throw an error if some medicine does not exist', async () => {});
+  });
+
+  describe('removeMedicinesFromGroup', () => {
+    it('should remove medicines from a group', async () => {});
+    it('should throw an error if group does not exist', async () => {});
+  });
 });

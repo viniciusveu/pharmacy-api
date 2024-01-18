@@ -1,0 +1,150 @@
+## PHARMACY-API 
+// Install REST Client on your VS Code to make requests
+
+
+## Auth
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "teste",
+    "password": "teste"
+}
+
+
+
+## Medicines
+
+### GetAll
+GET http://localhost:3000/medicines
+
+### GetOne
+GET http://localhost:3000/medicines/deb38276-c8e0-4845-8c8a-635a71fa9370
+
+### Create
+POST  http://localhost:3000/medicines
+Content-Type: application/json
+
+{
+    "name": "Paracetamol",
+    "description": "Medicine for headaches",
+    "manufacturer": "Bayer",
+    "batch": 1234,
+    "type": "Tablet",
+    "posology": "Take one tablet every 8 hours",
+    "indications": "Headaches",
+    "contraindications": "None"
+}
+
+### Update
+PATCH  http://localhost:3000/medicines/deb38276-c8e0-4845-8c8a-635a71fa9370
+Content-Type: application/json
+
+{
+    "name": "Paracetamol",
+    "description": "Medicine for headaches",
+    "manufacturer": "Bayer",
+    "batch": 1234,
+    "type": "Tablet",
+    "posology": "Take one tablet every 8 hours",
+    "indications": "Headaches",
+    "contraindications": "None",
+    "stockQuantity": 1000
+} 
+
+### Delete
+DELETE http://localhost:3000/medicines/deb38276-c8e0-4845-8c8a-635a71fa9370
+
+
+
+## Groups
+
+### GetAll
+GET http://localhost:3000/medicine-groups
+
+### GetOne
+GET http://localhost:3000/medicine-groups/deb38276-c8e0-4845-8c8a-635a71fa9370
+
+### Create
+POST http://localhost:3000/medicine-groups
+Content-Type: application/json
+
+{
+    "name": "teste",
+    "medicineIds": [
+        "deb38276-c8e0-4845-8c8a-635a71fa9370"
+    ]
+}
+
+### Update
+PATCH http://localhost:3000/medicine-groups/deb38276-c8e0-4845-8c8a-635a71fa9370
+Content-Type: application/json
+
+{
+    "name": "teste",
+    "medicineIds": [
+        "deb38276-c8e0-4845-8c8a-635a71fa9370"
+    ]
+}
+
+### Delete 
+DELETE http://localhost:3000/medicine-groups/deb38276-c8e0-4845-8c8a-635a71fa9370
+
+### AddMedicines
+PATCH http://localhost:3000/medicine-groups/add-medicines/deb38276-c8e0-4845-8c8a-635a71fa9370
+Content-Type: application/json
+
+{
+    "medicineIds": [
+        "deb38276-c8e0-4845-8c8a-635a71fa9370"
+    ]
+}
+
+### RemoveMedicines
+PATCH http://localhost:3000/medicine-groups/remove-medicines/deb38276-c8e0-4845-8c8a-635a71fa9370
+Content-Type: application/json
+
+{
+    "medicineIds": [
+        "deb38276-c8e0-4845-8c8a-635a71fa9370"
+    ]
+}
+
+
+
+## Stock
+
+### FindOne
+GET http://localhost:3000/stock/deb38276-c8e0-4845-8c8a-635a71fa9370
+
+### Create
+POST http://localhost:3000/stock
+Content-Type: application/json
+
+{
+    "medicineId": "deb38276-c8e0-4845-8c8a-635a71fa9370",
+    "quantity": 0
+}
+
+### Update
+PATCH http://localhost:3000/stock/deb38276-c8e0-4845-8c8a-635a71fa9370
+Content-Type: application/json
+
+{
+    "quantity": 0
+}
+
+
+### AddToStock
+PATCH http://localhost:3000/stock/add-to-stock/deb38276-c8e0-4845-8c8a-635a71fa9370
+
+{
+    "quantity": 0
+}
+
+### RemoveFromStock
+PATCH http://localhost:3000/stock/remove-from-stock/deb38276-c8e0-4845-8c8a-635a71fa9370
+
+{
+    "quantity": 0
+}

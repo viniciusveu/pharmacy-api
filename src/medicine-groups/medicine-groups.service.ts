@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Body, ConflictException, Injectable, Param } from '@nestjs/common';
 import { CreateMedicineGroupDto } from './dto/create-medicine-group.dto';
 import { UpdateMedicineGroupDto } from './dto/update-medicine-group.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { MedicineGroup } from './entities/medicine-group.entity';
 import { MedicinesService } from '../medicines/medicines.service';
 import { Medicine } from '../medicines/entities/medicine.entity';
+import { AddOrRemoveMedicinesDto } from './dto/add-or-remove-medicines.dto';
 
 @Injectable()
 export class MedicineGroupsService {
@@ -13,7 +14,7 @@ export class MedicineGroupsService {
     @InjectRepository(MedicineGroup)
     private readonly medicineGroupRepository: Repository<MedicineGroup>,
     private readonly medicinesService: MedicinesService,
-  ) {}
+  ) { }
 
   async create(
     createMedicineGroupDto: CreateMedicineGroupDto,
@@ -59,6 +60,26 @@ export class MedicineGroupsService {
 
   async remove(id: string) {
     return await this.medicineGroupRepository.delete({ id });
+  }
+
+  async addMedicinesToGroup(id: string, addOrRemoveMedicinesDto: AddOrRemoveMedicinesDto) {
+    const medicines: Medicine[] = await this.checkMedicineIds(addOrRemoveMedicinesDto.medicineIds);
+    const group: MedicineGroup = await this.medicineGroupRepository.findOne({
+      where: { id },
+      relations: [ 'medicines'],
+    })
+    group.medicines.push(...medicines);
+    return this.medicineGroupRepository.update({ id }, group);
+  }
+
+  async removeMedicinesFromGroup(id: string, addOrRemoveMedicinesDto: AddOrRemoveMedicinesDto) {
+    const medicines: Medicine[] = await this.checkMedicineIds(addOrRemoveMedicinesDto.medicineIds);
+    const group: MedicineGroup = await this.medicineGroupRepository.findOne({
+      where: { id },
+      relations: [ 'medicines'],
+    })
+    group.medicines = group.medicines.filter(medicine => !medicines.includes(medicine));
+    return this.medicineGroupRepository.update({ id }, group);
   }
 
   private async checkMedicineIds(medicineIds: string[]): Promise<Medicine[]> {

@@ -31,20 +31,6 @@ export class StockService {
     });
   }
 
-  async findOneByMedicineId(medicineId: string) {
-    return await this.stockRepository.findOne({
-      where: { medicineId },
-    });
-  }
-
-  async update(id: string, updateStockDto: UpdateStockDto) {
-    return await this.stockRepository.update(id, updateStockDto);
-  }
-
-  async updateByMedicineId(medicineId: string, updateStockDto: UpdateStockDto) {
-    return await this.stockRepository.update(medicineId, updateStockDto);
-  }
-
   async remove(id: string) {
     return await this.stockRepository.delete(id);
   }

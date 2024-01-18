@@ -9,7 +9,6 @@ describe('StockService', () => {
     save: jest.fn(),
     find: jest.fn(),
     findOne: jest.fn(),
-    update: jest.fn(),
     delete: jest.fn(),
   };
 
@@ -29,5 +28,41 @@ describe('StockService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  describe('create', () => {
+    it('should create a new stock', async () => {});
+  });
+
+  describe('remove', () => {
+    it('should delete a stock', async () => {});
+    
+    it('should throw an error if stock does not exist', async () => {});
+  });
+
+  describe('findAll', () => {
+    it('should return an array of stocks', async () => {});
+  });
+
+  describe('findOne', () => {
+    it('should return a stock', async () => {});
+
+    it('should throw an error if the stock does not exist', async () => {});
+    
+    it('should throw an error if the medicine does not exist', async () => {});
+  });
+
+  describe('addToStock', () => {
+    it('should add a medicine to a stock', async () => {});
+
+    it('should throw an error if the medicine does not exist', async () => {});
+  });
+
+  describe('removeFromStock', () => {
+    it('should remove medicines from a stock', async () => {});
+
+    it('should throw an error if the medicine does not exist', async () => {});
+
+    it('should throw an error if the medicine quantity is not enough to remove', async () => {});
   });
 });

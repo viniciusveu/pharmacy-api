@@ -66,7 +66,7 @@ describe('MedicinesService', () => {
   });
 
   describe('create', () => {
-    it('should create a medicine', async () => {
+    it('should create a medicine and its stock', async () => {
       jest
         .spyOn(mockMedicineRepository, 'save')
         .mockImplementation(() => medicineReturn);
@@ -75,6 +75,8 @@ describe('MedicinesService', () => {
 
       expect(result).toEqual(medicineReturn);
     });
+
+    it('should throw an error if this medicine name already exists', async () => {});
   });
 
   describe('findAll', () => {
@@ -114,7 +116,7 @@ describe('MedicinesService', () => {
   });
 
   describe('remove', () => {
-    it('should remove a medicine', async () => {
+    it('should delete a medicine and its stock', async () => {
       jest
         .spyOn(mockMedicineRepository, 'delete')
         .mockImplementation(() => medicineReturn);
