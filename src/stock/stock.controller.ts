@@ -6,10 +6,12 @@ import {
   ParseUUIDPipe,
   Patch,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { StockService } from './stock.service';
 import { MedicinesService } from '../medicines/medicines.service';
 import { UpdateStockDto } from './dto/update-stock.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('stock')
 export class StockController {
@@ -19,16 +21,19 @@ export class StockController {
   ) {}
 
   @Get()
+  @UseGuards(AuthGuard)
   findAll() {
     return this.stockService.findAll();
   }
 
   @Get(':medicineId')
+  @UseGuards(AuthGuard)
   findOne(@Param('medicineId', ParseUUIDPipe) medicineId: string) {
     return this.stockService.findOne(medicineId);
   }
 
   @Patch(':medicineId')
+  @UseGuards(AuthGuard)
   update(
     @Param('medicineId', ParseUUIDPipe) medicineId: string,
     @Body() updateStockDto: UpdateStockDto,
@@ -37,6 +42,7 @@ export class StockController {
   }
 
   @Patch(':medicineId/add/:quantity')
+  @UseGuards(AuthGuard)
   async addToStock(
     @Param('medicineId', ParseUUIDPipe) medicineId: string,
     @Param('quantity') quantity: number,
@@ -46,6 +52,7 @@ export class StockController {
   }
 
   @Patch(':medicineId/remove/:quantity')
+  @UseGuards(AuthGuard)
   async removeFromStock(
     @Param('medicineId', ParseUUIDPipe) medicineId: string,
     @Param('quantity') quantity: number,

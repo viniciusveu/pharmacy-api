@@ -1,6 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MedicineGroupsController } from './medicine-groups.controller';
 import { MedicineGroupsService } from './medicine-groups.service';
+import { JwtService } from '@nestjs/jwt';
+
+class MockJwtService {
+  sign() {
+    return 'token';
+  }
+}
 
 describe('MedicineGroupsController', () => {
   let controller: MedicineGroupsController;
@@ -9,7 +16,10 @@ describe('MedicineGroupsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MedicineGroupsController],
-      providers: [{ provide: MedicineGroupsService, useValue: service }],
+      providers: [
+        { provide: MedicineGroupsService, useValue: service },
+        { provide: JwtService, useClass: MockJwtService },
+      ],
     }).compile();
 
     controller = module.get<MedicineGroupsController>(MedicineGroupsController);

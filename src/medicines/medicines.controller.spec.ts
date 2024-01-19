@@ -3,6 +3,7 @@ import { MedicinesController } from './medicines.controller';
 import { MedicinesService } from './medicines.service';
 import { CreateMedicineDto } from './dto/create-medicine.dto';
 import { Medicine } from './entities/medicine.entity';
+import { JwtService } from '@nestjs/jwt';
 
 const medicineToCreate: CreateMedicineDto = {
   name: 'Paracetamol',
@@ -40,6 +41,12 @@ const medicineToUpdate: CreateMedicineDto = {
   stockQuantity: 20,
 };
 
+class MockJwtService {
+  sign() {
+    return 'token';
+  }
+}
+
 describe('MedicinesController', () => {
   let controller: MedicinesController;
   let service: Partial<MedicinesService>;
@@ -55,7 +62,10 @@ describe('MedicinesController', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MedicinesController],
-      providers: [{ provide: MedicinesService, useValue: service }],
+      providers: [
+        { provide: MedicinesService, useValue: service },
+        { provide: JwtService, useClass: MockJwtService },
+      ],
     }).compile();
 
     controller = module.get<MedicinesController>(MedicinesController);

@@ -2,6 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { StockController } from './stock.controller';
 import { StockService } from './stock.service';
 import { MedicinesService } from '../medicines/medicines.service';
+import { JwtService } from '@nestjs/jwt';
+
+class MockJwtService {
+  sign() {
+    return 'token';
+  }
+}
 
 const stockReturn = {
   medicineId: '1',
@@ -51,6 +58,10 @@ describe('StockController', () => {
         {
           provide: MedicinesService,
           useValue: mockMedicineService,
+        },
+        {
+          provide: JwtService,
+          useClass: MockJwtService,
         },
       ],
     }).compile();

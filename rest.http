@@ -1,15 +1,20 @@
 ## PHARMACY-API 
 // Install REST Client in your VS Code to make requests
 
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJqb2huIiwiaWF0IjoxNzA1NjM3NjU4LCJleHAiOjE3MDU2NDEyNTh9.g47jT3FdadAHvAiJ4VejLSsBWJAlDvEQj-opRA3O4Po
 
-## Auth
-POST http://localhost:3000/login
+### Auth
+POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "username": "teste",
-    "password": "teste"
+    "username": "john",
+    "password": "changeme"
 }
+
+### Profile
+GET http://localhost:3000/auth/profile
+Authorization: Bearer {{token}}
 
 
 
@@ -17,13 +22,18 @@ Content-Type: application/json
 
 ### GetAll
 GET http://localhost:3000/medicines
+Authorization: Bearer {{token}}
+
 
 ### GetOne
 GET http://localhost:3000/medicines/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
+Authorization: Bearer {{token}}
+
 
 ### Create
 POST  http://localhost:3000/medicines
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "name": "Paracetamol 6",
@@ -36,9 +46,11 @@ Content-Type: application/json
     "contraindications": "None"
 }
 
+
 ### Update
 PATCH  http://localhost:3000/medicines/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "name": "Paracetamol 4",
@@ -53,6 +65,7 @@ Content-Type: application/json
 
 ### Delete
 DELETE http://localhost:3000/medicines/055b0299-9b38-4b16-93e4-119b6cc8853c
+Authorization: Bearer {{token}}
 
 
 
@@ -60,15 +73,18 @@ DELETE http://localhost:3000/medicines/055b0299-9b38-4b16-93e4-119b6cc8853c
 
 ### GetAll
 GET http://localhost:3000/medicine-groups
+Authorization: Bearer {{token}}
 
 
 ### GetOne
 GET http://localhost:3000/medicine-groups/654fe7a3-b8d3-4668-984e-ca5d0fc591c7
+Authorization: Bearer {{token}}
 
 
 ### Create
 POST http://localhost:3000/medicine-groups
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "name": "common",
@@ -83,6 +99,7 @@ Content-Type: application/json
 ### Update
 PATCH http://localhost:3000/medicine-groups/654fe7a3-b8d3-4668-984e-ca5d0fc591c7
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "medicineIds": [
@@ -92,12 +109,15 @@ Content-Type: application/json
 
 ### Delete 
 DELETE http://localhost:3000/medicine-groups/deb38276-c8e0-4845-8c8a-635a71fa9370
+Authorization: Bearer {{token}}
 
 ### AddMedicines
 PATCH http://localhost:3000/medicine-groups/e3b0ffee-91e0-4e24-a844-de9e4d5d64ec/add/08a28b83-b6f9-4a3d-a7b6-89872cca2b93
+Authorization: Bearer {{token}}
 
 ### RemoveMedicines
 PATCH http://localhost:3000/medicine-groups/9d256843-7e78-4c84-9f14-8b1e70566d4a/remove/ac36d71b-280a-4c59-9e31-e7c575d30534
+Authorization: Bearer {{token}}
 
 
 
@@ -105,11 +125,13 @@ PATCH http://localhost:3000/medicine-groups/9d256843-7e78-4c84-9f14-8b1e70566d4a
 
 ### FindOne
 GET http://localhost:3000/stock/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
+Authorization: Bearer {{token}}
 
 
 ### Update
 PATCH http://localhost:3000/stock/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "quantity": -60
@@ -118,10 +140,12 @@ Content-Type: application/json
 
 ### AddToStock
 PATCH http://localhost:3000/stock/84c26e33-90b8-4831-a3fc-0a15ca367a5c/add/100
+Authorization: Bearer {{token}}
 
 
 ### RemoveFromStock
 PATCH http://localhost:3000/stock/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e/remove/70
+Authorization: Bearer {{token}}
 
 {
     "quantity": 0
