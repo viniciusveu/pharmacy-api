@@ -78,9 +78,6 @@ export class MedicineGroupsService {
     }
 
     const medicine = await this.medicinesService.findOne(medicineId);
-    if (!medicine) {
-      throw new Error('Medicine not found');
-    }
 
     group.medicines = [...group.medicines, medicine];
     await this.medicineGroupRepository.save(group);
@@ -90,7 +87,15 @@ export class MedicineGroupsService {
 
   async removeMedicineFromGroup(groupId: string, medicineId: string) {
     const group = await this.findOne(groupId);
-    group.medicines = group.medicines.filter((medicine) => medicine.id !== medicineId);
+    if (!group) {
+      throw new Error('Medicine group not found');
+    }
+    if (group.medicines.length === 0) {
+      throw new Error('Medicine group does not have any medicine');
+    }
+    await this.medicinesService.findOne(medicineId);
+
+    group.medicines = group.medicines.filter(medicine  => medicine.id !== medicineId);
 
     await this.medicineGroupRepository.save(group);
 

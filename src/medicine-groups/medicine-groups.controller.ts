@@ -13,31 +13,36 @@ import { MedicineGroupsService } from './medicine-groups.service';
 import { CreateMedicineGroupDto } from './dto/create-medicine-group.dto';
 import { UpdateMedicineGroupDto } from './dto/update-medicine-group.dto';
 import { AuthGuard } from '../auth/auth.guard';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+
+@ApiBearerAuth()
+@ApiTags('medicine-groups')
+@UseGuards(AuthGuard)
 @Controller('medicine-groups')
 export class MedicineGroupsController {
   constructor(private readonly medicineGroupsService: MedicineGroupsService) { }
 
   @Post()
-  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Create a new medicine group' })
   create(@Body() createMedicineGroupDto: CreateMedicineGroupDto) {
     return this.medicineGroupsService.create(createMedicineGroupDto);
   }
 
   @Get()
-  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Get all medicine groups' })
   findAll() {
     return this.medicineGroupsService.findAll();
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Get a specific medicine group' })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.medicineGroupsService.findOne(id);
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Update a specific medicine group' })
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateMedicineGroupDto: UpdateMedicineGroupDto,
@@ -46,13 +51,13 @@ export class MedicineGroupsController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Delete a specific medicine group' })
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.medicineGroupsService.remove(id);
   }
 
   @Patch(':groupId/add/:medicineId')
-  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Add a medicine to a specific group' })
   addMedicineToGroup(
     @Param('groupId', ParseUUIDPipe) groupId: string,
     @Param('medicineId', ParseUUIDPipe) medicineId: string,
@@ -61,7 +66,7 @@ export class MedicineGroupsController {
   }
 
   @Patch(':groupId/remove/:medicineId')
-  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Remove a medicine from a specific group' })
   removeMedicineFromGroup(
     @Param('groupId', ParseUUIDPipe) groupId: string,
     @Param('medicineId', ParseUUIDPipe) medicineId: string,
