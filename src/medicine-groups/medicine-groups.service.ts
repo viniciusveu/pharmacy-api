@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Body, ConflictException, Injectable, Param } from '@nestjs/common';
 import { CreateMedicineGroupDto } from './dto/create-medicine-group.dto';
 import { UpdateMedicineGroupDto } from './dto/update-medicine-group.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +13,7 @@ export class MedicineGroupsService {
     @InjectRepository(MedicineGroup)
     private readonly medicineGroupRepository: Repository<MedicineGroup>,
     private readonly medicinesService: MedicinesService,
-  ) {}
+  ) { }
 
   async create(
     createMedicineGroupDto: CreateMedicineGroupDto,
@@ -51,14 +51,62 @@ export class MedicineGroupsService {
   }
 
   async update(id: string, updateMedicineGroupDto: UpdateMedicineGroupDto) {
-    return await this.medicineGroupRepository.update(
-      { id },
-      updateMedicineGroupDto,
-    );
+    const group = await this.findOne(id);
+    if (!group) {
+      throw new Error('Medicine group not found');
+    }
+
+    if (updateMedicineGroupDto.name !== undefined) {
+      group.name = updateMedicineGroupDto.name;
+    }
+    if (updateMedicineGroupDto.medicineIds !== undefined) {
+      group.medicines = await this.checkMedicineIds(updateMedicineGroupDto.medicineIds);
+    }
+    await this.medicineGroupRepository.save(group);
+
+    return { success: true };
   }
 
   async remove(id: string) {
-    return await this.medicineGroupRepository.delete({ id });
+    const group = await this.findOne(id);
+    if (!group) {
+      throw new Error('Medicine group not found');
+    }
+
+    await this.medicineGroupRepository.delete({ id });
+
+    return { success: true };
+  }
+
+  async addMedicineToGroup(id: string, medicineId: string) {
+    const group = await this.findOne(id);
+    if (!group) {
+      throw new Error('Medicine group not found');
+    }
+
+    const medicine = await this.medicinesService.findOne(medicineId);
+
+    group.medicines = [...group.medicines, medicine];
+    await this.medicineGroupRepository.save(group);
+
+    return { success: true };
+  }
+
+  async removeMedicineFromGroup(groupId: string, medicineId: string) {
+    const group = await this.findOne(groupId);
+    if (!group) {
+      throw new Error('Medicine group not found');
+    }
+    if (group.medicines.length === 0) {
+      throw new Error('Medicine group does not have any medicine');
+    }
+    await this.medicinesService.findOne(medicineId);
+
+    group.medicines = group.medicines.filter(medicine  => medicine.id !== medicineId);
+
+    await this.medicineGroupRepository.save(group);
+
+    return { success: true };
   }
 
   private async checkMedicineIds(medicineIds: string[]): Promise<Medicine[]> {

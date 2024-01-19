@@ -17,7 +17,7 @@ export class MedicinesService {
     @InjectRepository(Medicine)
     private readonly medicineRepository: Repository<Medicine>,
     private readonly stockService: StockService,
-  ) {}
+  ) { }
 
   async create(createMedicineDto: CreateMedicineDto): Promise<Medicine> {
     const medicineIfExists = await this.medicineRepository.findOne({
@@ -62,21 +62,23 @@ export class MedicinesService {
   async update(
     id: string,
     updateMedicineDto: UpdateMedicineDto,
-  ): Promise<UpdateResult> {
-    try {
-      const medicine = this.medicineRepository.update(id, updateMedicineDto);
-      return medicine;
-    } catch (error) {
-      throw new ExceptionsHandler(error);
+  ): Promise<Object> {
+    const medicine = await this.findOne(id);
+    if (!medicine) {
+      throw new NotFoundException(`Medicine with id ${id} not found`);
     }
+
+    await this.medicineRepository.update(id, updateMedicineDto);
+    return { success: true };
   }
 
-  async remove(id: string): Promise<DeleteResult> {
-    try {
-      const medicine = await this.medicineRepository.delete(id);
-      return medicine;
-    } catch (error) {
-      throw new ExceptionsHandler(error);
+  async remove(id: string): Promise<Object> {
+    const medicine = await this.findOne(id);
+    if (!medicine) {
+      throw new NotFoundException(`Medicine not found`);
     }
+
+    await this.medicineRepository.delete(id);
+    return { success: true };
   }
 }

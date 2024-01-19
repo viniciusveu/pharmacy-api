@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: pwd_pharmacy
       POSTGRES_DB: mydb_pharmacy
     ports:
-      - "54322:5432"
+      - "5432:5432"
     volumes:
       - postgres_data_pharmacy:/var/lib/postgresql/data
 

@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Medicine } from '../../medicines/entities/medicine.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class MedicineGroup {
@@ -13,9 +14,12 @@ export class MedicineGroup {
   id: string;
 
   @Column({ unique: true })
+  @ApiProperty({ example: 'Antibiotics' })
   name: string;
 
-  @ManyToMany(() => Medicine, (medicine) => medicine.groups)
+  @ManyToMany(() => Medicine, (medicine) => medicine.groups, {
+    onDelete: 'CASCADE',  
+  })
   @JoinTable()
   medicines: Medicine[];
 }

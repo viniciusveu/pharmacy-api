@@ -1,0 +1,146 @@
+## PHARMACY-API 
+// Install REST Client in your VS Code to make requests
+
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJqb2huIiwiaWF0IjoxNzA1NjgzMjg0LCJleHAiOjE3MDU2OTA0ODR9.k7QbNiIZsu_1FdklkXwekaEAWAHOOnmEeClMKsCu_eE
+
+### Auth OK
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "john",
+    "password": "changeme"
+}
+
+### Profile
+GET http://localhost:3000/auth/profile
+Authorization: Bearer {{token}}
+
+
+
+## Medicines
+
+### GetAll OK
+GET http://localhost:3000/medicines
+Authorization: Bearer {{token}}
+
+
+### GetOne OK
+GET http://localhost:3000/medicines/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75d
+Authorization: Bearer {{token}}
+
+
+### Create OK
+POST  http://localhost:3000/medicines
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Paracetamol 10",
+    "description": "Medicine for hecadahes",
+    "manufacturer": "Bayer",
+    "batch": 1234,
+    "type": "Tablet",
+    "posology": "Take one tablet every 8 hours",
+    "indications": "Headaches",
+    "contraindications": "None"
+}
+
+
+### Update OK
+PATCH  http://localhost:3000/medicines/84c26e33-90b8-4831-a3fc-0a15ca367a5d
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Para ce ta mal",
+    "description": "Medicine for headaches",
+    "manufacturer": "Bayer",
+    "batch": 1235,
+    "type": "Tablet",
+    "posology": "Take one tablet every 8 hours",
+    "indications": "Headaches",
+    "contraindications": "None"
+} 
+
+### Delete OK
+DELETE http://localhost:3000/medicines/e101b507-eb99-4802-b3c5-08694ec5131c
+Authorization: Bearer {{token}}
+
+
+
+## Groups
+
+### GetAll OK
+GET http://localhost:3000/medicine-groups
+Authorization: Bearer {{token}}
+
+
+### GetOne OK
+GET http://localhost:3000/medicine-groups/1d90a96c-cb9e-4ece-a556-ae51b398807c
+Authorization: Bearer {{token}}
+
+
+### Create OK
+POST http://localhost:3000/medicine-groups
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "TESTE",
+    "medicineIds": [
+        "0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e",
+        "9a12a0a6-cf34-429f-8104-d96d0fca92b1"
+    ]
+}
+
+### Update OK +-
+PATCH http://localhost:3000/medicine-groups/654fe7a3-b8d3-4668-984e-ca5d0fc591c7
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "TESTE UPDATE",
+    "medicineIds": [
+    ]
+}
+
+### Delete OK
+DELETE http://localhost:3000/medicine-groups/1d90a96c-cb9e-4ece-a556-ae51b398807c
+Authorization: Bearer {{token}}
+
+### AddMedicines OK
+PATCH http://localhost:3000/medicine-groups/654fe7a3-b8d3-4668-984e-ca5d0fc591c7/add/84c26e33-90b8-4831-a3fc-0a15ca367a5c
+Authorization: Bearer {{token}}
+
+### RemoveMedicines OK
+PATCH http://localhost:3000/medicine-groups/1d90a96c-cb9e-4ece-a556-ae51b398807c/remove/9a12a0a6-cf34-429f-8104-d96d0fca92b1
+Authorization: Bearer {{token}}
+
+
+
+## Stock
+
+### FindOne OK
+GET http://localhost:3000/stock/08a28b83-b6f9-4a3d-a7b6-89872cca2b93
+Authorization: Bearer {{token}}
+
+
+### Update OK
+PATCH http://localhost:3000/stock/08a28b83-b6f9-4a3d-a7b6-89872cca2b93
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "quantity": 50
+}
+
+
+### AddToStock OK
+PATCH http://localhost:3000/stock/08a28b83-b6f9-4a3d-a7b6-89872cca2b93/add/100
+Authorization: Bearer {{token}}
+
+
+### RemoveFromStock OK
+PATCH http://localhost:3000/stock/08a28b83-b6f9-4a3d-a7b6-89872cca2b93/remove/100
+Authorization: Bearer {{token}}
