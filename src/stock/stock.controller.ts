@@ -1,12 +1,15 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
   ParseUUIDPipe,
+  Patch,
   Put,
 } from '@nestjs/common';
 import { StockService } from './stock.service';
 import { MedicinesService } from '../medicines/medicines.service';
+import { UpdateStockDto } from './dto/update-stock.dto';
 
 @Controller('stock')
 export class StockController {
@@ -20,25 +23,33 @@ export class StockController {
     return this.stockService.findAll();
   }
 
-  @Get(':medicationId')
-  findOne(@Param('medicationId') id: string) {
-    return this.stockService.findOne(id);
+  @Get(':medicineId')
+  findOne(@Param('medicineId', ParseUUIDPipe) medicineId: string) {
+    return this.stockService.findOne(medicineId);
   }
 
-  @Put(':medicineId/add/:quantity')
-  async addProductsToStock(
-    @Param('medicineId', new ParseUUIDPipe()) medicineId: string,
+  @Patch(':medicineId')
+  update(
+    @Param('medicineId', ParseUUIDPipe) medicineId: string,
+    @Body() updateStockDto: UpdateStockDto,
+  ) {
+    return this.stockService.update(medicineId, updateStockDto);
+  }
+
+  @Patch(':medicineId/add/:quantity')
+  async addToStock(
+    @Param('medicineId', ParseUUIDPipe) medicineId: string,
     @Param('quantity') quantity: number,
   ): Promise<void> {
     const medicine = await this.medicineService.findOne(medicineId);
-    await this.stockService.addProductsToStock(medicine, quantity);
+    await this.stockService.addToStock(medicine, +quantity);
   }
 
-  @Put(':medicineId/remove/:quantity')
-  async removeProductsFromStock(
-    @Param('medicineId', new ParseUUIDPipe()) medicineId: string,
+  @Patch(':medicineId/remove/:quantity')
+  async removeFromStock(
+    @Param('medicineId', ParseUUIDPipe) medicineId: string,
     @Param('quantity') quantity: number,
   ): Promise<void> {
-    await this.stockService.removeProductsFromStock(medicineId, quantity);
+    await this.stockService.removeFromStock(medicineId, +quantity);
   }
 }

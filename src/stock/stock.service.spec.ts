@@ -31,13 +31,33 @@ describe('StockService', () => {
   });
 
   describe('create', () => {
-    it('should create a new stock', async () => {});
+    it('should create a new stock and return it', async () => {
+      const newStock = new Stock();
+      mockStockRepository.save.mockResolvedValue(newStock);
+
+      expect(await service.create(newStock)).toBe(newStock);
+    });
+
+    it('should throw an error when creation fails', async () => {
+      const newStock = new Stock();
+      mockStockRepository.save.mockRejectedValue(new Error('Failed to create stock'));
+
+      await expect(service.create(newStock)).rejects.toThrow('Failed to create stock');
+    });
   });
 
   describe('remove', () => {
-    it('should delete a stock', async () => {});
-    
-    it('should throw an error if stock does not exist', async () => {});
+    it('should remove stock and return affected result', async () => {
+      mockStockRepository.delete.mockResolvedValue({ affected: 1 });
+
+      expect(await service.remove('1')).toEqual({ affected: 1 });
+    });
+
+    it('should throw an error when removal fails', async () => {
+      mockStockRepository.delete.mockRejectedValue(new Error('Failed to remove stock'));
+
+      await expect(service.remove('non-existent-id')).rejects.toThrow('Failed to remove stock');
+    });
   });
 
   describe('findAll', () => {

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { MedicinesService } from './medicines.service';
 import { CreateMedicineDto } from './dto/create-medicine.dto';
@@ -27,20 +28,20 @@ export class MedicinesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.medicinesService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateMedicineDto: UpdateMedicineDto,
   ) {
     return this.medicinesService.update(id, updateMedicineDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete(':id, ParseUUIDPipe')
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.medicinesService.remove(id);
   }
 }

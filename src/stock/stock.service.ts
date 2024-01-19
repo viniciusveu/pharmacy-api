@@ -25,17 +25,39 @@ export class StockService {
     return await this.stockRepository.find();
   }
 
-  async findOne(id: string) {
-    return await this.stockRepository.findOne({
-      where: { id },
+  async findOne(medicineId: string) {
+    const stock = await this.stockRepository.findOne({
+      where: { medicineId },
     });
+
+    if (!stock) {
+      throw new NotFoundException(
+        `Stock entry for medicine with id ${medicineId} not found`,
+      );
+    }
+
+    return stock;
   }
 
-  async remove(id: string) {
-    return await this.stockRepository.delete(id);
+  async remove(medicineId: string) {
+    return await this.stockRepository.delete(medicineId);
   }
 
-  async addProductsToStock(
+  async update(medicineId: string, updateStockDto: UpdateStockDto) {
+    const stock = await this.stockRepository.findOne({
+      where: { medicineId },
+    })
+
+    if (!stock) {
+      throw new NotFoundException(
+        `Stock entry for medicine with id ${medicineId} not found`,
+      );
+    }
+
+    return await this.stockRepository.save({ ...stock, ...updateStockDto });
+  }
+
+  async addToStock(
     medicine: Medicine,
     quantity: number,
   ): Promise<void> {
@@ -54,7 +76,7 @@ export class StockService {
     await this.stockRepository.save(stockEntry);
   }
 
-  async removeProductsFromStock(
+  async removeFromStock(
     medicineId: string,
     quantity: number,
   ): Promise<void> {

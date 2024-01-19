@@ -6,12 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-  Put,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { MedicineGroupsService } from './medicine-groups.service';
 import { CreateMedicineGroupDto } from './dto/create-medicine-group.dto';
 import { UpdateMedicineGroupDto } from './dto/update-medicine-group.dto';
-import { AddOrRemoveMedicinesDto } from './dto/add-or-remove-medicines.dto';
 
 @Controller('medicine-groups')
 export class MedicineGroupsController {
@@ -28,36 +27,36 @@ export class MedicineGroupsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.medicineGroupsService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateMedicineGroupDto: UpdateMedicineGroupDto,
   ) {
     return this.medicineGroupsService.update(id, updateMedicineGroupDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.medicineGroupsService.remove(id);
   }
 
-  @Put(':groupId/add')
-  addMedicinesToGroup(
-    @Param('groupId') groupId: string,
-    @Body('addOrRemoveMedicinesDto') addOrRemoveMedicinesDto: AddOrRemoveMedicinesDto,
+  @Patch(':groupId/add/:medicineId')
+  addMedicineToGroup(
+    @Param('groupId', ParseUUIDPipe) groupId: string,
+    @Param('medicineId', ParseUUIDPipe) medicineId: string,
   ) {
-    return this.medicineGroupsService.addMedicinesToGroup(groupId, addOrRemoveMedicinesDto);
+    return this.medicineGroupsService.addMedicineToGroup(groupId, medicineId);
   }
 
-  @Put(':groupId/remove')
-  removeMedicinesFromGroup(
-    @Param('groupId') groupId: string,
-    @Body('addOrRemoveMedicinesDto') addOrRemoveMedicinesDto: AddOrRemoveMedicinesDto,
+  @Patch(':groupId/remove/:medicineId')
+  removeMedicineFromGroup(
+    @Param('groupId', ParseUUIDPipe) groupId: string,
+    @Param('medicineId', ParseUUIDPipe) medicineId: string,
   ) {
-    return this.medicineGroupsService.removeMedicinesFromGroup(groupId, addOrRemoveMedicinesDto);
+    return this.medicineGroupsService.removeMedicineFromGroup(groupId, medicineId);
   }
 }

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUUID, ValidateIf } from 'class-validator';
 
 export class CreateStockDto {
   @IsString()
@@ -6,7 +6,12 @@ export class CreateStockDto {
   @IsNotEmpty()
   medicineId: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  quantity: number;
+  @IsPositive({ message: 'Quantity must be a positive number' })
+  @ValidateIf((o, value) => value !== undefined && value !== null)  quantity: number;
+
+  @IsString()
+  @IsOptional()
+  category?: string;
 }

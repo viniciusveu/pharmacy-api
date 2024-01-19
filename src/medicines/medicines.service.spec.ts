@@ -4,7 +4,18 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Medicine } from './entities/medicine.entity';
 import { CreateMedicineDto } from './dto/create-medicine.dto';
 import { StockService } from '../stock/stock.service';
+import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 
+const medicineToUpdated: CreateMedicineDto = {
+  name: 'Paracetamol New',
+  description: 'Medicine for headaches',
+  manufacturer: 'Bayer',
+  batch: 1234,
+  type: 'Tablet',
+  posology: 'Take one tablet every 8 hours',
+  indications: 'Headaches',
+  contraindications: 'None',
+};
 const medicineToCreate: CreateMedicineDto = {
   name: 'Paracetamol',
   description: 'Medicine for headaches',
@@ -14,7 +25,6 @@ const medicineToCreate: CreateMedicineDto = {
   posology: 'Take one tablet every 8 hours',
   indications: 'Headaches',
   contraindications: 'None',
-  stockQuantity: 10,
 };
 const medicineReturn: Medicine = {
   id: '1',
@@ -38,6 +48,7 @@ describe('MedicinesService', () => {
     findOne: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
+    count: jest.fn(),
   };
   const mockStockService = {
     create: jest.fn(),
@@ -76,7 +87,11 @@ describe('MedicinesService', () => {
       expect(result).toEqual(medicineReturn);
     });
 
-    it('should throw an error if this medicine name already exists', async () => {});
+    it('should throw an error if this medicine name already exists', async () => {
+      jest.spyOn(mockMedicineRepository, 'findOne').mockImplementation(() => medicineReturn);
+
+      await expect(service.create(medicineToCreate)).rejects.toThrow('Medicine already exists');
+    });
   });
 
   describe('findAll', () => {
@@ -85,9 +100,9 @@ describe('MedicinesService', () => {
         .spyOn(mockMedicineRepository, 'find')
         .mockImplementation(() => [medicineReturn]);
 
-      const result = await service.create(medicineToCreate);
+      const result = await service.findAll();
 
-      expect(result).toEqual(medicineReturn);
+      expect(result).toEqual([medicineReturn]);
     });
   });
 
@@ -105,13 +120,13 @@ describe('MedicinesService', () => {
 
   describe('update', () => {
     it('should update a medicine', async () => {
-      jest
-        .spyOn(mockMedicineRepository, 'update')
-        .mockImplementation(() => medicineReturn);
+      const updatedMedicine = { ...medicineReturn, name: 'Paracetamol Updated' };
+      jest.spyOn(mockMedicineRepository, 'count').mockResolvedValue(1);
+      jest.spyOn(mockMedicineRepository, 'update').mockResolvedValue(updatedMedicine);
 
-      const result = await service.update(medicineReturn.id, medicineReturn);
+      const result = await service.update(medicineReturn.id, updatedMedicine);
 
-      expect(result).toEqual(medicineReturn);
+      expect(result).toEqual(updatedMedicine);
     });
   });
 

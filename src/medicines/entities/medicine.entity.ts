@@ -14,7 +14,7 @@ export class Medicine {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({})
+  @Column()
   name: string;
 
   @Column()

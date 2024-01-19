@@ -1,5 +1,5 @@
 ## PHARMACY-API 
-// Install REST Client on your VS Code to make requests
+// Install REST Client in your VS Code to make requests
 
 
 ## Auth
@@ -19,14 +19,14 @@ Content-Type: application/json
 GET http://localhost:3000/medicines
 
 ### GetOne
-GET http://localhost:3000/medicines/deb38276-c8e0-4845-8c8a-635a71fa9370
+GET http://localhost:3000/medicines/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
 
 ### Create
 POST  http://localhost:3000/medicines
 Content-Type: application/json
 
 {
-    "name": "Paracetamol",
+    "name": "Paracetamol 6",
     "description": "Medicine for headaches",
     "manufacturer": "Bayer",
     "batch": 1234,
@@ -37,23 +37,22 @@ Content-Type: application/json
 }
 
 ### Update
-PATCH  http://localhost:3000/medicines/deb38276-c8e0-4845-8c8a-635a71fa9370
+PATCH  http://localhost:3000/medicines/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
 Content-Type: application/json
 
 {
-    "name": "Paracetamol",
+    "name": "Paracetamol 4",
     "description": "Medicine for headaches",
     "manufacturer": "Bayer",
-    "batch": 1234,
+    "batch": 1235,
     "type": "Tablet",
     "posology": "Take one tablet every 8 hours",
     "indications": "Headaches",
-    "contraindications": "None",
-    "stockQuantity": 1000
+    "contraindications": "None"
 } 
 
 ### Delete
-DELETE http://localhost:3000/medicines/deb38276-c8e0-4845-8c8a-635a71fa9370
+DELETE http://localhost:3000/medicines/055b0299-9b38-4b16-93e4-119b6cc8853c
 
 
 
@@ -62,28 +61,32 @@ DELETE http://localhost:3000/medicines/deb38276-c8e0-4845-8c8a-635a71fa9370
 ### GetAll
 GET http://localhost:3000/medicine-groups
 
+
 ### GetOne
-GET http://localhost:3000/medicine-groups/deb38276-c8e0-4845-8c8a-635a71fa9370
+GET http://localhost:3000/medicine-groups/654fe7a3-b8d3-4668-984e-ca5d0fc591c7
+
 
 ### Create
 POST http://localhost:3000/medicine-groups
 Content-Type: application/json
 
 {
-    "name": "teste",
+    "name": "common",
     "medicineIds": [
-        "deb38276-c8e0-4845-8c8a-635a71fa9370"
+        "0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e",
+        "ac36d71b-280a-4c59-9e31-e7c575d30534",
+        "08a28b83-b6f9-4a3d-a7b6-89872cca2b93",
+        "71834a75-2415-4893-b4f7-d2e5ee9d16f1"
     ]
 }
 
 ### Update
-PATCH http://localhost:3000/medicine-groups/deb38276-c8e0-4845-8c8a-635a71fa9370
+PATCH http://localhost:3000/medicine-groups/654fe7a3-b8d3-4668-984e-ca5d0fc591c7
 Content-Type: application/json
 
 {
-    "name": "teste",
     "medicineIds": [
-        "deb38276-c8e0-4845-8c8a-635a71fa9370"
+        "0afd9b8c-cd50-4eaf-beb7-c6245dffc75e"
     ]
 }
 
@@ -91,59 +94,34 @@ Content-Type: application/json
 DELETE http://localhost:3000/medicine-groups/deb38276-c8e0-4845-8c8a-635a71fa9370
 
 ### AddMedicines
-PATCH http://localhost:3000/medicine-groups/add-medicines/deb38276-c8e0-4845-8c8a-635a71fa9370
-Content-Type: application/json
-
-{
-    "medicineIds": [
-        "deb38276-c8e0-4845-8c8a-635a71fa9370"
-    ]
-}
+PATCH http://localhost:3000/medicine-groups/e3b0ffee-91e0-4e24-a844-de9e4d5d64ec/add/08a28b83-b6f9-4a3d-a7b6-89872cca2b93
 
 ### RemoveMedicines
-PATCH http://localhost:3000/medicine-groups/remove-medicines/deb38276-c8e0-4845-8c8a-635a71fa9370
-Content-Type: application/json
-
-{
-    "medicineIds": [
-        "deb38276-c8e0-4845-8c8a-635a71fa9370"
-    ]
-}
+PATCH http://localhost:3000/medicine-groups/9d256843-7e78-4c84-9f14-8b1e70566d4a/remove/ac36d71b-280a-4c59-9e31-e7c575d30534
 
 
 
 ## Stock
 
 ### FindOne
-GET http://localhost:3000/stock/deb38276-c8e0-4845-8c8a-635a71fa9370
+GET http://localhost:3000/stock/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
 
-### Create
-POST http://localhost:3000/stock
-Content-Type: application/json
-
-{
-    "medicineId": "deb38276-c8e0-4845-8c8a-635a71fa9370",
-    "quantity": 0
-}
 
 ### Update
-PATCH http://localhost:3000/stock/deb38276-c8e0-4845-8c8a-635a71fa9370
+PATCH http://localhost:3000/stock/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
 Content-Type: application/json
 
 {
-    "quantity": 0
+    "quantity": -60
 }
 
 
 ### AddToStock
-PATCH http://localhost:3000/stock/add-to-stock/deb38276-c8e0-4845-8c8a-635a71fa9370
+PATCH http://localhost:3000/stock/84c26e33-90b8-4831-a3fc-0a15ca367a5c/add/100
 
-{
-    "quantity": 0
-}
 
 ### RemoveFromStock
-PATCH http://localhost:3000/stock/remove-from-stock/deb38276-c8e0-4845-8c8a-635a71fa9370
+PATCH http://localhost:3000/stock/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e/remove/70
 
 {
     "quantity": 0

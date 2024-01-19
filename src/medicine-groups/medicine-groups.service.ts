@@ -6,7 +6,6 @@ import { Repository } from 'typeorm';
 import { MedicineGroup } from './entities/medicine-group.entity';
 import { MedicinesService } from '../medicines/medicines.service';
 import { Medicine } from '../medicines/entities/medicine.entity';
-import { AddOrRemoveMedicinesDto } from './dto/add-or-remove-medicines.dto';
 
 @Injectable()
 export class MedicineGroupsService {
@@ -52,34 +51,50 @@ export class MedicineGroupsService {
   }
 
   async update(id: string, updateMedicineGroupDto: UpdateMedicineGroupDto) {
-    return await this.medicineGroupRepository.update(
-      { id },
-      updateMedicineGroupDto,
-    );
+    const group = await this.findOne(id);
+    if (!group) {
+      throw new Error('Medicine group not found');
+    }
+
+    if (updateMedicineGroupDto.name !== undefined) {
+      group.name = updateMedicineGroupDto.name;
+    }
+    if (updateMedicineGroupDto.medicineIds !== undefined) {
+      group.medicines = await this.checkMedicineIds(updateMedicineGroupDto.medicineIds);
+    }
+    await this.medicineGroupRepository.save(group);
+
+    return { success: true };
   }
 
   async remove(id: string) {
     return await this.medicineGroupRepository.delete({ id });
   }
 
-  async addMedicinesToGroup(id: string, addOrRemoveMedicinesDto: AddOrRemoveMedicinesDto) {
-    const medicines: Medicine[] = await this.checkMedicineIds(addOrRemoveMedicinesDto.medicineIds);
-    const group: MedicineGroup = await this.medicineGroupRepository.findOne({
-      where: { id },
-      relations: [ 'medicines'],
-    })
-    group.medicines.push(...medicines);
-    return this.medicineGroupRepository.update({ id }, group);
+  async addMedicineToGroup(id: string, medicineId: string) {
+    const group = await this.findOne(id);
+    if (!group) {
+      throw new Error('Medicine group not found');
+    }
+
+    const medicine = await this.medicinesService.findOne(medicineId);
+    if (!medicine) {
+      throw new Error('Medicine not found');
+    }
+
+    group.medicines = [...group.medicines, medicine];
+    await this.medicineGroupRepository.save(group);
+
+    return { success: true };
   }
 
-  async removeMedicinesFromGroup(id: string, addOrRemoveMedicinesDto: AddOrRemoveMedicinesDto) {
-    const medicines: Medicine[] = await this.checkMedicineIds(addOrRemoveMedicinesDto.medicineIds);
-    const group: MedicineGroup = await this.medicineGroupRepository.findOne({
-      where: { id },
-      relations: [ 'medicines'],
-    })
-    group.medicines = group.medicines.filter(medicine => !medicines.includes(medicine));
-    return this.medicineGroupRepository.update({ id }, group);
+  async removeMedicineFromGroup(groupId: string, medicineId: string) {
+    const group = await this.findOne(groupId);
+    group.medicines = group.medicines.filter((medicine) => medicine.id !== medicineId);
+
+    await this.medicineGroupRepository.save(group);
+
+    return { success: true };
   }
 
   private async checkMedicineIds(medicineIds: string[]): Promise<Medicine[]> {

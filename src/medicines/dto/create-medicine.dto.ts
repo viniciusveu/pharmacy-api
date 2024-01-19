@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
-export class CreateMedicineDto {
+export class  CreateMedicineDto {
   @IsString()
   @IsOptional()
   id?: string;
@@ -39,5 +39,5 @@ export class CreateMedicineDto {
 
   @IsNumber()
   @IsOptional()
-  stockQuantity: number;
+  stockQuantity?: number;
 }

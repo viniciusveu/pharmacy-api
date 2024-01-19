@@ -18,6 +18,9 @@ export class Stock {
   @Column({ default: 0 })
   quantity: number;
 
+  @Column({ default: 'default' })
+  category: string;
+
   @ManyToOne(() => Medicine, (medicine) => medicine.stock, {
     onDelete: 'CASCADE',
   })
