@@ -21,6 +21,12 @@ Docker needed: https://www.docker.com/products/docker-desktop/
 # rum 
 $ docker-compose up [-d] --build
 ```
+Access on http://localhost:3000
+
+
+## Documentation
+
+After ran, access on http://localhost:3000/api
 
 
 ## Stay in touch
