@@ -2,39 +2,69 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-
-class MockJwtService {
-  sign() {
-    return 'token';
-  }
-}
+import { LoginAuthDto } from './dto/login-auth.dto';
+import { UnauthorizedException } from '@nestjs/common';
 
 describe('AuthService', () => {
   let service: AuthService;
-
-  const mockUserService = {
-    findOne: jest.fn(),
-  };
+  let usersService: UsersService;
+  let jwtService: JwtService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
-        {
-          provide: UsersService,
-          useValue: mockUserService
-        },
-        {
-          provide: JwtService,
-          useClass: MockJwtService
-        }
+        UsersService,
+        JwtService,
       ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
+    usersService = module.get<UsersService>(UsersService);
+    jwtService = module.get<JwtService>(JwtService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  describe('login', () => {
+    it('should return an access token when login is successful', async () => {
+      // Arrange
+      const loginAuthDto: LoginAuthDto = {
+        username: 'vinic',
+        password: '123456',
+      };
+      const user = {
+        id: 'user-id',
+        username: 'vinic',
+        password: '123456',
+      };
+      const expectedToken = 'your-access-token';
+      jest.spyOn(usersService, 'findOne').mockResolvedValue(user);
+      jest.spyOn(jwtService, 'signAsync').mockResolvedValue(expectedToken);
+
+      // Act
+      const result = await service.login(loginAuthDto);
+
+      // Assert
+      expect(usersService.findOne).toHaveBeenCalledWith(loginAuthDto.username);
+      expect(jwtService.signAsync).toHaveBeenCalledWith({ sub: user.id, username: user.username });
+      expect(result).toEqual({ access_token: expectedToken });
+    });
+
+    it('should throw an UnauthorizedException when login is unsuccessful', async () => {
+      // Arrange
+      const loginAuthDto: LoginAuthDto = {
+        username: 'vinic',
+        password: '123456',
+      };
+      const user = {
+        id: 'user-id',
+        username: 'vinic',
+        password: 'wrong-password',
+      };
+      jest.spyOn(usersService, 'findOne').mockResolvedValue(user);
+
+      // Act and Assert
+      await expect(service.login(loginAuthDto)).rejects.toThrow(UnauthorizedException);
+      expect(usersService.findOne).toHaveBeenCalledWith(loginAuthDto.username);
+    });
   });
 });

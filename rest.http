@@ -1,7 +1,7 @@
 ## PHARMACY-API 
 // Install REST Client in your VS Code to make requests
 
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJqb2huIiwiaWF0IjoxNzA1NjM3NjU4LCJleHAiOjE3MDU2NDEyNTh9.g47jT3FdadAHvAiJ4VejLSsBWJAlDvEQj-opRA3O4Po
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJqb2huIiwiaWF0IjoxNzA1NjQzMDE0LCJleHAiOjE3MDU2NTAyMTR9.C4_PXrJmA5K7fZBLrqBohpXOYeu7hCYTHP2WsCQ2XQg
 
 ### Auth
 POST http://localhost:3000/auth/login
