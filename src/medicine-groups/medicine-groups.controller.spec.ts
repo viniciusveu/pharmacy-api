@@ -116,14 +116,8 @@ describe('MedicineGroupsController', () => {
 
   describe('remove', () => {
     it('should remove a group', async () => {
-      jest.spyOn(service, 'remove').mockResolvedValue({
-        affected: 1,
-        raw: [],
-      });
-      expect(await controller.remove('1')).toEqual({
-        affected: 1,
-        raw: [],
-      });
+      jest.spyOn(service, 'remove').mockResolvedValue({ success: true });
+      expect(await controller.remove('1')).toEqual({ success: true });
     });
   });
 

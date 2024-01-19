@@ -11,7 +11,7 @@ import { MedicinesModule } from './medicines/medicines.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       port: +process.env.DB_PORT || 5432,
-      host: process.env.DB_HOST || 'localhost',
+      host: process.env.DB_HOST || 'postgres_pharmacy',
       username: process.env.DB_USER || 'user_pharmacy',
       password: process.env.DB_PASSWORD || 'pwd_pharmacy',
       database: process.env.DB_DATABASE || 'mydb_pharmacy',

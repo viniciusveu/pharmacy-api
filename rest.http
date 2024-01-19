@@ -48,12 +48,12 @@ Authorization: Bearer {{token}}
 
 
 ### Update OK
-PATCH  http://localhost:3000/medicines/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
+PATCH  http://localhost:3000/medicines/84c26e33-90b8-4831-a3fc-0a15ca367a5d
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "Paracetamol 4",
+    "name": "Para ce ta mal",
     "description": "Medicine for headaches",
     "manufacturer": "Bayer",
     "batch": 1235,
@@ -64,7 +64,7 @@ Authorization: Bearer {{token}}
 } 
 
 ### Delete OK
-DELETE http://localhost:3000/medicines/08a28b83-b6f9-4a3d-a7b6-89872cca2b93
+DELETE http://localhost:3000/medicines/e101b507-eb99-4802-b3c5-08694ec5131c
 Authorization: Bearer {{token}}
 
 
@@ -95,14 +95,13 @@ Authorization: Bearer {{token}}
 }
 
 ### Update OK +-
-PATCH http://localhost:3000/medicine-groups/1d90a96c-cb9e-4ece-a556-ae51b398807c
+PATCH http://localhost:3000/medicine-groups/654fe7a3-b8d3-4668-984e-ca5d0fc591c7
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
     "name": "TESTE UPDATE",
     "medicineIds": [
-        "08a28b83-b6f9-4a3d-a7b6-89872cca2b93"
     ]
 }
 
@@ -111,7 +110,7 @@ DELETE http://localhost:3000/medicine-groups/1d90a96c-cb9e-4ece-a556-ae51b398807
 Authorization: Bearer {{token}}
 
 ### AddMedicines OK
-PATCH http://localhost:3000/medicine-groups/654fe7a3-b8d3-4668-984e-ca5d0fc591c7/add/9a12a0a6-cf34-429f-8104-d96d0fca92b1
+PATCH http://localhost:3000/medicine-groups/654fe7a3-b8d3-4668-984e-ca5d0fc591c7/add/84c26e33-90b8-4831-a3fc-0a15ca367a5c
 Authorization: Bearer {{token}}
 
 ### RemoveMedicines OK

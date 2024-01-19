@@ -138,9 +138,15 @@ describe('MedicineGroupsService', () => {
 
   describe('remove', () => {
     it('should remove a group', async () => {
-      jest.spyOn(mockMedicineGroupRepository, 'delete').mockResolvedValue({ affected: 1 });
+      jest.spyOn(mockMedicineGroupRepository, 'delete').mockResolvedValue({ success: true });
+      jest.spyOn(mockMedicineGroupRepository, 'findOne').mockResolvedValue(mockGroup);
       const result = await service.remove(mockGroup.id);
-      expect(result).toEqual({ affected: 1 });
+      expect(result).toEqual({ success: true });
+    });
+
+    it('should throw an error if group does not exist', async () => {
+      jest.spyOn(mockMedicineGroupRepository, 'findOne').mockResolvedValue(undefined);
+      await expect(service.remove(mockGroup.id)).rejects.toThrow('Medicine group not found');
     });
   });
 

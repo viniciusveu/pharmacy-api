@@ -9,7 +9,7 @@ import {
 import { AuthService } from './auth.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { AuthGuard } from './auth.guard';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiTags('auth')
@@ -19,12 +19,16 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Login' })
+  @ApiResponse({ status: 201, description: 'Login successfully and return token' })
   login(@Body() loginAuthDto: LoginAuthDto) {
     return this.authService.login(loginAuthDto);
   }
 
   @UseGuards(AuthGuard)
   @Get('profile')
+  @ApiOperation({ summary: 'Get profile' })
+  @ApiResponse({ status: 200, description: 'Get profile successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   getProfile(@Request() req) {
     return req.user;
   }

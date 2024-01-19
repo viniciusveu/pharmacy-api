@@ -62,22 +62,23 @@ export class MedicinesService {
   async update(
     id: string,
     updateMedicineDto: UpdateMedicineDto,
-  ): Promise<UpdateResult> {
-    try {
-      const medicine = this.medicineRepository.update(id, updateMedicineDto);
-      return medicine;
-    } catch (error) {
-      throw new ExceptionsHandler(error);
+  ): Promise<Object> {
+    const medicine = await this.findOne(id);
+    if (!medicine) {
+      throw new NotFoundException(`Medicine with id ${id} not found`);
     }
+
+    await this.medicineRepository.update(id, updateMedicineDto);
+    return { success: true };
   }
 
-  async remove(id: string): Promise<DeleteResult> {
+  async remove(id: string): Promise<Object> {
     const medicine = await this.findOne(id);
     if (!medicine) {
       throw new NotFoundException(`Medicine not found`);
     }
-    
-    const deletedMedicine = await this.medicineRepository.delete(id);
-    return deletedMedicine;
+
+    await this.medicineRepository.delete(id);
+    return { success: true };
   }
 }

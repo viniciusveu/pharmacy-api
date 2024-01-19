@@ -17,7 +17,7 @@ export class StockService {
     private readonly stockRepository: Repository<Stock>,
   ) {}
 
-  async create(createStockDto: CreateStockDto) {
+  async create(createStockDto: CreateStockDto): Promise<Stock> {
     return await this.stockRepository.save(createStockDto);
   }
 
@@ -25,7 +25,7 @@ export class StockService {
     return await this.stockRepository.find();
   }
 
-  async findOne(medicineId: string) {
+  async findOne(medicineId: string): Promise<Stock> {
     const stock = await this.stockRepository.findOne({
       where: { medicineId },
     });
@@ -39,11 +39,7 @@ export class StockService {
     return stock;
   }
 
-  async remove(medicineId: string) {
-    return await this.stockRepository.delete(medicineId);
-  }
-
-  async update(medicineId: string, updateStockDto: UpdateStockDto) {
+  async remove(medicineId: string): Promise<Object> {
     const stock = await this.stockRepository.findOne({
       where: { medicineId },
     })
@@ -54,13 +50,31 @@ export class StockService {
       );
     }
 
-    return await this.stockRepository.save({ ...stock, ...updateStockDto });
+    await this.stockRepository.delete(medicineId);
+
+    return { success: true };
+  }
+
+  async update(medicineId: string, updateStockDto: UpdateStockDto): Promise<Object> {
+    const stock = await this.stockRepository.findOne({
+      where: { medicineId },
+    })
+
+    if (!stock) {
+      throw new NotFoundException(
+        `Stock entry for medicine with id ${medicineId} not found`,
+      );
+    }
+
+    await this.stockRepository.save({ ...stock, ...updateStockDto });
+
+    return { success: true };
   }
 
   async addToStock(
     medicine: Medicine,
     quantity: number,
-  ): Promise<void> {
+  ): Promise<Object> {
     const stockEntry = await this.stockRepository.findOne({
       where: { medicine: { id: medicine.id } },
     });
@@ -74,12 +88,14 @@ export class StockService {
     stockEntry.quantity += quantity;
 
     await this.stockRepository.save(stockEntry);
+
+    return { success: true };
   }
 
   async removeFromStock(
     medicineId: string,
     quantity: number,
-  ): Promise<void> {
+  ): Promise<Object> {
     const stockEntry = await this.stockRepository.findOne({
       where: { medicine: { id: medicineId } },
     });
@@ -99,5 +115,7 @@ export class StockService {
     stockEntry.quantity -= quantity;
 
     await this.stockRepository.save(stockEntry);
+
+    return { success: true };
   }
 }

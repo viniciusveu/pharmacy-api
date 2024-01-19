@@ -68,7 +68,14 @@ export class MedicineGroupsService {
   }
 
   async remove(id: string) {
-    return await this.medicineGroupRepository.delete({ id });
+    const group = await this.findOne(id);
+    if (!group) {
+      throw new Error('Medicine group not found');
+    }
+
+    await this.medicineGroupRepository.delete({ id });
+
+    return { success: true };
   }
 
   async addMedicineToGroup(id: string, medicineId: string) {

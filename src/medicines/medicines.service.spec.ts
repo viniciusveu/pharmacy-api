@@ -126,7 +126,7 @@ describe('MedicinesService', () => {
 
       const result = await service.update(medicineReturn.id, updatedMedicine);
 
-      expect(result).toEqual(updatedMedicine);
+      expect(result).toEqual({ success: true });
     });
   });
 
@@ -138,7 +138,7 @@ describe('MedicinesService', () => {
 
       const result = await service.remove(medicineReturn.id);
 
-      expect(result).toEqual(medicineReturn);
+      expect(result).toEqual({ success: true });
     });
   });
 });
