@@ -1,9 +1,9 @@
 ## PHARMACY-API 
 // Install REST Client in your VS Code to make requests
 
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJqb2huIiwiaWF0IjoxNzA1NjQzMDE0LCJleHAiOjE3MDU2NTAyMTR9.C4_PXrJmA5K7fZBLrqBohpXOYeu7hCYTHP2WsCQ2XQg
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJqb2huIiwiaWF0IjoxNzA1NjgzMjg0LCJleHAiOjE3MDU2OTA0ODR9.k7QbNiIZsu_1FdklkXwekaEAWAHOOnmEeClMKsCu_eE
 
-### Auth
+### Auth OK
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
@@ -20,24 +20,24 @@ Authorization: Bearer {{token}}
 
 ## Medicines
 
-### GetAll
+### GetAll OK
 GET http://localhost:3000/medicines
 Authorization: Bearer {{token}}
 
 
-### GetOne
-GET http://localhost:3000/medicines/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
+### GetOne OK
+GET http://localhost:3000/medicines/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75d
 Authorization: Bearer {{token}}
 
 
-### Create
+### Create OK
 POST  http://localhost:3000/medicines
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "Paracetamol 6",
-    "description": "Medicine for headaches",
+    "name": "Paracetamol 10",
+    "description": "Medicine for hecadahes",
     "manufacturer": "Bayer",
     "batch": 1234,
     "type": "Tablet",
@@ -47,7 +47,7 @@ Authorization: Bearer {{token}}
 }
 
 
-### Update
+### Update OK
 PATCH  http://localhost:3000/medicines/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -63,90 +63,85 @@ Authorization: Bearer {{token}}
     "contraindications": "None"
 } 
 
-### Delete
-DELETE http://localhost:3000/medicines/055b0299-9b38-4b16-93e4-119b6cc8853c
+### Delete OK
+DELETE http://localhost:3000/medicines/08a28b83-b6f9-4a3d-a7b6-89872cca2b93
 Authorization: Bearer {{token}}
 
 
 
 ## Groups
 
-### GetAll
+### GetAll OK
 GET http://localhost:3000/medicine-groups
 Authorization: Bearer {{token}}
 
 
-### GetOne
-GET http://localhost:3000/medicine-groups/654fe7a3-b8d3-4668-984e-ca5d0fc591c7
+### GetOne OK
+GET http://localhost:3000/medicine-groups/1d90a96c-cb9e-4ece-a556-ae51b398807c
 Authorization: Bearer {{token}}
 
 
-### Create
+### Create OK
 POST http://localhost:3000/medicine-groups
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "common",
+    "name": "TESTE",
     "medicineIds": [
         "0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e",
-        "ac36d71b-280a-4c59-9e31-e7c575d30534",
-        "08a28b83-b6f9-4a3d-a7b6-89872cca2b93",
-        "71834a75-2415-4893-b4f7-d2e5ee9d16f1"
+        "9a12a0a6-cf34-429f-8104-d96d0fca92b1"
     ]
 }
 
-### Update
-PATCH http://localhost:3000/medicine-groups/654fe7a3-b8d3-4668-984e-ca5d0fc591c7
+### Update OK +-
+PATCH http://localhost:3000/medicine-groups/1d90a96c-cb9e-4ece-a556-ae51b398807c
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
+    "name": "TESTE UPDATE",
     "medicineIds": [
-        "0afd9b8c-cd50-4eaf-beb7-c6245dffc75e"
+        "08a28b83-b6f9-4a3d-a7b6-89872cca2b93"
     ]
 }
 
-### Delete 
-DELETE http://localhost:3000/medicine-groups/deb38276-c8e0-4845-8c8a-635a71fa9370
+### Delete OK
+DELETE http://localhost:3000/medicine-groups/1d90a96c-cb9e-4ece-a556-ae51b398807c
 Authorization: Bearer {{token}}
 
-### AddMedicines
-PATCH http://localhost:3000/medicine-groups/e3b0ffee-91e0-4e24-a844-de9e4d5d64ec/add/08a28b83-b6f9-4a3d-a7b6-89872cca2b93
+### AddMedicines OK
+PATCH http://localhost:3000/medicine-groups/654fe7a3-b8d3-4668-984e-ca5d0fc591c7/add/9a12a0a6-cf34-429f-8104-d96d0fca92b1
 Authorization: Bearer {{token}}
 
-### RemoveMedicines
-PATCH http://localhost:3000/medicine-groups/9d256843-7e78-4c84-9f14-8b1e70566d4a/remove/ac36d71b-280a-4c59-9e31-e7c575d30534
+### RemoveMedicines OK
+PATCH http://localhost:3000/medicine-groups/1d90a96c-cb9e-4ece-a556-ae51b398807c/remove/9a12a0a6-cf34-429f-8104-d96d0fca92b1
 Authorization: Bearer {{token}}
 
 
 
 ## Stock
 
-### FindOne
-GET http://localhost:3000/stock/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
+### FindOne OK
+GET http://localhost:3000/stock/08a28b83-b6f9-4a3d-a7b6-89872cca2b93
 Authorization: Bearer {{token}}
 
 
-### Update
-PATCH http://localhost:3000/stock/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e
+### Update OK
+PATCH http://localhost:3000/stock/08a28b83-b6f9-4a3d-a7b6-89872cca2b93
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "quantity": -60
+    "quantity": 50
 }
 
 
-### AddToStock
-PATCH http://localhost:3000/stock/84c26e33-90b8-4831-a3fc-0a15ca367a5c/add/100
+### AddToStock OK
+PATCH http://localhost:3000/stock/08a28b83-b6f9-4a3d-a7b6-89872cca2b93/add/100
 Authorization: Bearer {{token}}
 
 
-### RemoveFromStock
-PATCH http://localhost:3000/stock/0afd9b8c-cd50-4eaf-beb7-c6245dfdc75e/remove/70
+### RemoveFromStock OK
+PATCH http://localhost:3000/stock/08a28b83-b6f9-4a3d-a7b6-89872cca2b93/remove/100
 Authorization: Bearer {{token}}
-
-{
-    "quantity": 0
-}

@@ -65,10 +65,13 @@ export class Medicine {
   })
   contraindications: string;
 
-  @ManyToMany(() => MedicineGroup, (group) => group.medicines)
+  @ManyToMany(() => MedicineGroup, (group) => group.medicines, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable()
   groups: MedicineGroup[];
 
   @OneToMany(() => Stock, (stock) => stock.medicine)
+  @JoinTable()
   stock: Stock[];
 }

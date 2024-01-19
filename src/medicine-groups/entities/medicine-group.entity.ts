@@ -17,7 +17,9 @@ export class MedicineGroup {
   @ApiProperty({ example: 'Antibiotics' })
   name: string;
 
-  @ManyToMany(() => Medicine, (medicine) => medicine.groups)
+  @ManyToMany(() => Medicine, (medicine) => medicine.groups, {
+    onDelete: 'CASCADE',  
+  })
   @JoinTable()
   medicines: Medicine[];
 }

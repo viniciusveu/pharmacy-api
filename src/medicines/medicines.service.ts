@@ -17,7 +17,7 @@ export class MedicinesService {
     @InjectRepository(Medicine)
     private readonly medicineRepository: Repository<Medicine>,
     private readonly stockService: StockService,
-  ) {}
+  ) { }
 
   async create(createMedicineDto: CreateMedicineDto): Promise<Medicine> {
     const medicineIfExists = await this.medicineRepository.findOne({
@@ -72,11 +72,12 @@ export class MedicinesService {
   }
 
   async remove(id: string): Promise<DeleteResult> {
-    try {
-      const medicine = await this.medicineRepository.delete(id);
-      return medicine;
-    } catch (error) {
-      throw new ExceptionsHandler(error);
+    const medicine = await this.findOne(id);
+    if (!medicine) {
+      throw new NotFoundException(`Medicine not found`);
     }
+    
+    const deletedMedicine = await this.medicineRepository.delete(id);
+    return deletedMedicine;
   }
 }
