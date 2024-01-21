@@ -1,35 +1,36 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+  <a href="http://nestjs.com/" target="blank">
+    <img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" />
+  </a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+[![CircleCI](https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456)](https://circleci.com/gh/nestjs/nest)
 
-  <p align="center">Pharmacy API [NestJS]</p>
+<p align="center">
+  <strong>Pharmacy API [NestJS]</strong>
+</p>
 
 ## Description
 
-Pharmacy API to manage medicines.
+Pharmacy API designed to efficiently manage medicines using NestJS.
 
 ## Installation
 
-Docker needed: https://www.docker.com/products/docker-desktop/
+Ensure you have Docker installed: [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-## Running the app
+## Running the App
 
 ```bash
-# rum 
+# Run
 $ docker-compose up [-d] --build
 ```
-Access on http://localhost:3000
 
+Access the application at ``http://localhost:3000``
 
 ## Documentation
 
-After ran, access on http://localhost:3000/api
+Once the application is running, access the API documentation at ``http://localhost:3000/api``
 
+## Stay in Touch
 
-## Stay in touch
-
-- Author - viniciusvedovotto@gmail.com
-
+Author: viniciusvedovotto@gmail.com
