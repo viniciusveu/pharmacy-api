@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Module } from '@nestjs/common';
 import { MedicineGroupsService } from './medicine-groups.service';
 import { MedicineGroupsController } from './medicine-groups.controller';

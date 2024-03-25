@@ -1,0 +1,10 @@
+rest.http
+.prettierrc
+.gitignore
+.github
+.eslintrc.js
+/test
+/node_modules
+/dist
+/coverage
+script-addMedicines.js

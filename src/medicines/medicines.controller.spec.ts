@@ -4,6 +4,7 @@ import { MedicinesService } from './medicines.service';
 import { CreateMedicineDto } from './dto/create-medicine.dto';
 import { Medicine } from './entities/medicine.entity';
 import { JwtService } from '@nestjs/jwt';
+import { SUCCESS_RESPONSE } from '../utils/SuccessResponse';
 
 const medicineToCreate: CreateMedicineDto = {
   name: 'Paracetamol',
@@ -76,6 +77,10 @@ describe('MedicinesController', () => {
     expect(service).toBeDefined();
   });
 
+  beforeAll(() => {
+    jest.clearAllMocks();
+  })
+
   describe('create', () => {
     it('should create a medicine', async () => {
       jest.spyOn(service, 'create').mockResolvedValue(medicineReturn);
@@ -84,6 +89,12 @@ describe('MedicinesController', () => {
 
       expect(result).toEqual(medicineReturn);
     });
+
+    it('should throw an error if service fails', async () => {
+      jest.spyOn(service, 'create').mockRejectedValueOnce(new Error('service error'));
+
+      await expect(controller.create(medicineToCreate)).rejects.toThrow('service error');
+    })
   });
 
   describe('findAll', () => {
@@ -94,6 +105,12 @@ describe('MedicinesController', () => {
 
       expect(result).toEqual([medicineReturn]);
     });
+
+    it('should throw an error if service fails', async () => {
+      jest.spyOn(service, 'findAll').mockRejectedValueOnce(new Error('service error'));
+
+      await expect(controller.findAll()).rejects.toThrow('service error');
+    })
   });
 
   describe('findOne', () => {
@@ -104,27 +121,45 @@ describe('MedicinesController', () => {
 
       expect(result).toEqual(medicineReturn);
     });
+
+    it('should throw an error if service fails', async () => {
+      jest.spyOn(service, 'findOne').mockRejectedValueOnce(new Error('service error'));
+
+      await expect(controller.findOne('1')).rejects.toThrow('service error');
+    })
   });
 
   describe('update', () => {
     it('should update a medicine', async () => {
       jest
         .spyOn(service, 'update')
-        .mockResolvedValue({ raw: [], affected: 1, generatedMaps: [] });
+        .mockResolvedValue(SUCCESS_RESPONSE);
 
       const result = await controller.update('1', medicineToUpdate);
 
-      expect(result).toEqual({ raw: [], affected: 1, generatedMaps: [] });
+      expect(result).toEqual(SUCCESS_RESPONSE);
     });
+
+    it('should throw an error if service fails', async () => {
+      jest.spyOn(service, 'update').mockRejectedValueOnce(new Error('service error'));
+
+      await expect(controller.update('1', medicineToUpdate)).rejects.toThrow('service error');
+    })
   });
 
   describe('remove', () => {
     it('should remove a medicine', async () => {
-      jest.spyOn(service, 'remove').mockResolvedValue({ raw: [], affected: 1 });
+      jest.spyOn(service, 'remove').mockResolvedValue(SUCCESS_RESPONSE);
 
       const result = await controller.remove('1');
 
-      expect(result).toEqual({ raw: [], affected: 1 });
+      expect(result).toEqual(SUCCESS_RESPONSE);
     });
+
+    it('should throw an error if service fails', async () => {
+      jest.spyOn(service, 'remove').mockRejectedValueOnce(new Error('service error'));
+
+      await expect(controller.remove('1')).rejects.toThrow('service error');
+    })
   });
 });

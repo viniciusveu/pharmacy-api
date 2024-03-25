@@ -17,6 +17,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: development
     container_name: nest-container_pharmacy
     depends_on:
       - postgres_pharmacy
@@ -30,4 +31,3 @@ services:
 volumes:
   postgres_data_pharmacy:
   app_pharmacy:
-

@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { ApiProperty } from "@nestjs/swagger";
 
 export class User {

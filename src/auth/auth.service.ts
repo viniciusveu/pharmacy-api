@@ -13,7 +13,7 @@ export class AuthService {
   async login(loginAuthDto: LoginAuthDto) {
     const { username, password } = loginAuthDto;
 
-    const user = await this.usersService.findOne(username);
+    const user = this.usersService.findOne(username);
     if (user?.password !== password) {
       throw new UnauthorizedException();
     }

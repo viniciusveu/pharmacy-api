@@ -37,7 +37,7 @@ describe('AuthService', () => {
         password: '123456',
       };
       const expectedToken = 'your-access-token';
-      jest.spyOn(usersService, 'findOne').mockResolvedValue(user);
+      jest.spyOn(usersService, 'findOne').mockReturnValue(user);
       jest.spyOn(jwtService, 'signAsync').mockResolvedValue(expectedToken);
 
       // Act
@@ -60,7 +60,7 @@ describe('AuthService', () => {
         username: 'vinic',
         password: 'wrong-password',
       };
-      jest.spyOn(usersService, 'findOne').mockResolvedValue(user);
+      jest.spyOn(usersService, 'findOne').mockReturnValue(user);
 
       // Act and Assert
       await expect(service.login(loginAuthDto)).rejects.toThrow(UnauthorizedException);

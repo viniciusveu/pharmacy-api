@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { ApiProperty } from '@nestjs/swagger';
 import { MedicineGroup } from '../../medicine-groups/entities/medicine-group.entity';
 import { Stock } from '../../stock/entities/stock.entity';

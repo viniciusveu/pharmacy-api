@@ -6,6 +6,7 @@ import { MedicinesService } from '../medicines/medicines.service';
 import { Medicine } from 'src/medicines/entities/medicine.entity';
 import { CreateMedicineGroupDto } from './dto/create-medicine-group.dto';
 import { NotFoundException } from '@nestjs/common';
+import { SUCCESS_RESPONSE } from '../utils/SuccessResponse';
 
 const mockMedicine: Medicine = {
   "id": "ac36d71b-280a-4c59-9e31-e7c575d30534",
@@ -127,7 +128,7 @@ describe('MedicineGroupsService', () => {
       jest.spyOn(mockMedicineService, 'findOne').mockResolvedValue(mockMedicine);
       jest.spyOn(mockMedicineGroupRepository, 'save').mockResolvedValue({});
       const group = await service.update(mockGroup.id, mockGroupDto);
-      expect(group).toEqual({ success: true });
+      expect(group).toEqual(SUCCESS_RESPONSE);
     });
 
     it('should throw an error if group does not exist', async () => {
@@ -138,10 +139,10 @@ describe('MedicineGroupsService', () => {
 
   describe('remove', () => {
     it('should remove a group', async () => {
-      jest.spyOn(mockMedicineGroupRepository, 'delete').mockResolvedValue({ success: true });
+      jest.spyOn(mockMedicineGroupRepository, 'delete').mockResolvedValue(SUCCESS_RESPONSE);
       jest.spyOn(mockMedicineGroupRepository, 'findOne').mockResolvedValue(mockGroup);
       const result = await service.remove(mockGroup.id);
-      expect(result).toEqual({ success: true });
+      expect(result).toEqual(SUCCESS_RESPONSE);
     });
 
     it('should throw an error if group does not exist', async () => {
@@ -156,7 +157,7 @@ describe('MedicineGroupsService', () => {
       jest.spyOn(mockMedicineService, 'findOne').mockResolvedValue(mockMedicine);
       jest.spyOn(mockMedicineGroupRepository, 'save').mockResolvedValue(mockGroup);
       const group = await service.addMedicineToGroup(mockGroup.id, mockMedicine.id);
-      expect(group).toEqual({ success: true });
+      expect(group).toEqual(SUCCESS_RESPONSE);
     });
 
     it('should throw an error if group does not exist', async () => {
@@ -179,7 +180,7 @@ describe('MedicineGroupsService', () => {
       jest.spyOn(mockMedicineService, 'findOne').mockResolvedValue(mockMedicine);
       jest.spyOn(mockMedicineGroupRepository, 'save').mockResolvedValue({});
       const group = await service.removeMedicineFromGroup(mockGroup.id, mockMedicine.id);
-      expect(group).toEqual({ success: true });
+      expect(group).toEqual(SUCCESS_RESPONSE);
     });
 
     it('should throw an error if group does not exist', async () => {

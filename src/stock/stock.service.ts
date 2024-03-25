@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Stock } from './entities/stock.entity';
 import { Medicine } from '../medicines/entities/medicine.entity';
+import { SUCCESS_RESPONSE, SuccessResponse } from '../utils/SuccessResponse';
 
 @Injectable()
 export class StockService {
@@ -39,7 +40,7 @@ export class StockService {
     return stock;
   }
 
-  async remove(medicineId: string): Promise<Object> {
+  async remove(medicineId: string): Promise<SuccessResponse> {
     const stock = await this.stockRepository.findOne({
       where: { medicineId },
     })
@@ -52,15 +53,15 @@ export class StockService {
 
     await this.stockRepository.delete(medicineId);
 
-    return { success: true };
+    return SUCCESS_RESPONSE;
   }
 
-  async update(medicineId: string, updateStockDto: UpdateStockDto): Promise<Object> {
-    const stock = await this.stockRepository.findOne({
-      where: { medicineId },
+  async update(medicineId: string, updateStockDto: UpdateStockDto): Promise<SuccessResponse> {
+    const stock = await this.stockRepository.find({
+      where: { medicineId, id: updateStockDto.id },
     })
 
-    if (!stock) {
+    if (!stock.length) {
       throw new NotFoundException(
         `Stock entry for medicine with id ${medicineId} not found`,
       );
@@ -68,13 +69,13 @@ export class StockService {
 
     await this.stockRepository.save({ ...stock, ...updateStockDto });
 
-    return { success: true };
+    return SUCCESS_RESPONSE;
   }
 
   async addToStock(
     medicine: Medicine,
     quantity: number,
-  ): Promise<Object> {
+  ): Promise<SuccessResponse> {
     const stockEntry = await this.stockRepository.findOne({
       where: { medicine: { id: medicine.id } },
     });
@@ -89,13 +90,13 @@ export class StockService {
 
     await this.stockRepository.save(stockEntry);
 
-    return { success: true };
+    return SUCCESS_RESPONSE;
   }
 
   async removeFromStock(
     medicineId: string,
     quantity: number,
-  ): Promise<Object> {
+  ): Promise<SuccessResponse> {
     const stockEntry = await this.stockRepository.findOne({
       where: { medicine: { id: medicineId } },
     });
@@ -116,6 +117,6 @@ export class StockService {
 
     await this.stockRepository.save(stockEntry);
 
-    return { success: true };
+    return SUCCESS_RESPONSE;
   }
 }

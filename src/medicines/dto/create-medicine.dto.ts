@@ -1,15 +1,8 @@
+/* istanbul ignore file */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsOptional, IsUUID } from 'class-validator';
 
 export class  CreateMedicineDto {
-  @IsString()
-  @IsOptional()
-  @ApiProperty(
-    {
-      required: false
-    }
-  )
-  id?: string;
 
   @IsString()
   @IsNotEmpty()

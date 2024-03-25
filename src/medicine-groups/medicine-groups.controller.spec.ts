@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MedicineGroupsController } from './medicine-groups.controller';
 import { MedicineGroupsService } from './medicine-groups.service';
 import { JwtService } from '@nestjs/jwt';
+import { SUCCESS_RESPONSE } from '../utils/SuccessResponse';
 
 class MockJwtService {
   sign() {
@@ -11,7 +12,7 @@ class MockJwtService {
 
 describe('MedicineGroupsController', () => {
   let controller: MedicineGroupsController;
-  let service: Partial<MedicineGroupsService> = {
+  const service: Partial<MedicineGroupsService> = {
     create: jest.fn(),
     findAll: jest.fn(),
     findOne: jest.fn(),
@@ -100,12 +101,8 @@ describe('MedicineGroupsController', () => {
 
   describe('update', () => {
     it('should update a group', async () => {
-      jest.spyOn(service, 'update').mockResolvedValue({
-        success: true
-      });
-      expect(await controller.update('1', { name: 'Antibiotics', medicineIds: [] })).toEqual({
-        success: true
-      });
+      jest.spyOn(service, 'update').mockResolvedValue(SUCCESS_RESPONSE);
+      expect(await controller.update('1', { name: 'Antibiotics', medicineIds: [] })).toEqual(SUCCESS_RESPONSE);
     });
 
     it('should throw an error if group name already exists', async () => {
@@ -116,8 +113,8 @@ describe('MedicineGroupsController', () => {
 
   describe('remove', () => {
     it('should remove a group', async () => {
-      jest.spyOn(service, 'remove').mockResolvedValue({ success: true });
-      expect(await controller.remove('1')).toEqual({ success: true });
+      jest.spyOn(service, 'remove').mockResolvedValue(SUCCESS_RESPONSE);
+      expect(await controller.remove('1')).toEqual(SUCCESS_RESPONSE);
     });
   });
 

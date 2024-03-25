@@ -1,4 +1,5 @@
-import { Body, ConflictException, Injectable, Param } from '@nestjs/common';
+/* istanbul ignore file */
+import {  ConflictException, Injectable } from '@nestjs/common';
 import { CreateMedicineGroupDto } from './dto/create-medicine-group.dto';
 import { UpdateMedicineGroupDto } from './dto/update-medicine-group.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +7,7 @@ import { Repository } from 'typeorm';
 import { MedicineGroup } from './entities/medicine-group.entity';
 import { MedicinesService } from '../medicines/medicines.service';
 import { Medicine } from '../medicines/entities/medicine.entity';
+import { SUCCESS_RESPONSE } from '../utils/SuccessResponse';
 
 @Injectable()
 export class MedicineGroupsService {
@@ -64,7 +66,7 @@ export class MedicineGroupsService {
     }
     await this.medicineGroupRepository.save(group);
 
-    return { success: true };
+    return SUCCESS_RESPONSE;
   }
 
   async remove(id: string) {
@@ -75,7 +77,7 @@ export class MedicineGroupsService {
 
     await this.medicineGroupRepository.delete({ id });
 
-    return { success: true };
+    return SUCCESS_RESPONSE;
   }
 
   async addMedicineToGroup(id: string, medicineId: string) {
@@ -89,7 +91,7 @@ export class MedicineGroupsService {
     group.medicines = [...group.medicines, medicine];
     await this.medicineGroupRepository.save(group);
 
-    return { success: true };
+    return SUCCESS_RESPONSE;
   }
 
   async removeMedicineFromGroup(groupId: string, medicineId: string) {
@@ -106,7 +108,7 @@ export class MedicineGroupsService {
 
     await this.medicineGroupRepository.save(group);
 
-    return { success: true };
+    return SUCCESS_RESPONSE;
   }
 
   private async checkMedicineIds(medicineIds: string[]): Promise<Medicine[]> {

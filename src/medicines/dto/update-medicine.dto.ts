@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateMedicineDto } from './create-medicine.dto';
 import { IsString, IsNumber, IsOptional } from 'class-validator';

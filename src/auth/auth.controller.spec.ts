@@ -13,7 +13,7 @@ class MockJwtService {
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let service: Partial<AuthService> = {
+  const service: Partial<AuthService> = {
     login: jest.fn(),
   };
 

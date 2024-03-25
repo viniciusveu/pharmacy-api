@@ -1,15 +1,11 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMedicineDto } from './dto/create-medicine.dto';
 import { UpdateMedicineDto } from './dto/update-medicine.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Medicine } from './entities/medicine.entity';
-import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 import { StockService } from '../stock/stock.service';
+import { SUCCESS_RESPONSE, SuccessResponse } from '../utils/SuccessResponse';
 
 @Injectable()
 export class MedicinesService {
@@ -17,22 +13,21 @@ export class MedicinesService {
     @InjectRepository(Medicine)
     private readonly medicineRepository: Repository<Medicine>,
     private readonly stockService: StockService,
-  ) { }
+  ) {}
 
   async create(createMedicineDto: CreateMedicineDto): Promise<Medicine> {
-    const medicineIfExists = await this.medicineRepository.findOne({
-      where: { name: createMedicineDto.name },
-    });
-    if (medicineIfExists) {
-      throw new ConflictException('Medicine already exists');
-    }
+    try {
+      await this.existsMedicineWithSameName(createMedicineDto.name);
 
-    const medicine = await this.medicineRepository.save(createMedicineDto);
-    this.stockService.create({
-      medicineId: medicine.id,
-      quantity: createMedicineDto.stockQuantity || 0,
-    });
-    return medicine;
+      const medicine = await this.medicineRepository.save(createMedicineDto);
+      await this.stockService.create({
+        medicineId: medicine.id,
+        quantity: createMedicineDto.stockQuantity || 0,
+      });
+      return medicine;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async findAll(): Promise<Medicine[]> {
@@ -42,43 +37,67 @@ export class MedicinesService {
       });
       return medicines;
     } catch (error) {
-      throw new ExceptionsHandler(error);
+      throw error;
     }
   }
 
   async findOne(id: string): Promise<Medicine> {
-    const medicine = await this.medicineRepository.findOne({
-      where: { id },
-      relations: ['stock', 'groups'],
+    try {
+      const medicine = await this.medicineRepository.findOne({
+        where: { id },
+        relations: ['stock', 'groups'],
+      });
+
+      if (!medicine) {
+        throw new NotFoundException(`Medicine with id ${id} not found`);
+      }
+
+      return medicine;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async update(id: string, updateMedicineDto: UpdateMedicineDto): Promise<SuccessResponse> {
+    try {
+      await this.findOne(id);
+
+      await this.medicineRepository.update(id, updateMedicineDto);
+      return SUCCESS_RESPONSE;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async remove(id: string): Promise<SuccessResponse> {
+    try {
+      await this.findOne(id);
+
+      await this.medicineRepository.delete(id);
+      return SUCCESS_RESPONSE;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async checkIfExists(name: string): Promise<boolean> {
+    try {
+      const medicineIfExists = await this.medicineRepository.findOne({
+        where: { name },
+      });
+
+      return !medicineIfExists;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  private async existsMedicineWithSameName(name: string): Promise<void> {
+    const medicineIfExists = await this.medicineRepository.findOne({
+      where: { name },
     });
-
-    if (!medicine) {
-      throw new NotFoundException(`Medicine with id ${id} not found`);
+    if (medicineIfExists) {
+      throw new ConflictException('Medicine already exists');
     }
-
-    return medicine;
-  }
-
-  async update(
-    id: string,
-    updateMedicineDto: UpdateMedicineDto,
-  ): Promise<Object> {
-    const medicine = await this.findOne(id);
-    if (!medicine) {
-      throw new NotFoundException(`Medicine with id ${id} not found`);
-    }
-
-    await this.medicineRepository.update(id, updateMedicineDto);
-    return { success: true };
-  }
-
-  async remove(id: string): Promise<Object> {
-    const medicine = await this.findOne(id);
-    if (!medicine) {
-      throw new NotFoundException(`Medicine not found`);
-    }
-
-    await this.medicineRepository.delete(id);
-    return { success: true };
   }
 }

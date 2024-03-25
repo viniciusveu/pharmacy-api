@@ -14,6 +14,7 @@ import { UpdateStockDto } from './dto/update-stock.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateStockDto } from './dto/create-stock.dto';
+import { SUCCESS_RESPONSE, SuccessResponse } from '../utils/SuccessResponse';
 
 
 @ApiBearerAuth()
@@ -46,11 +47,11 @@ export class StockController {
 
   @Patch(':medicineId')
   @ApiOperation({ summary: 'Atualizar estoque por ID do medicamento' })
-  @ApiResponse({ status: 200, description: '{ success: true }' })
+  @ApiResponse({ status: 200, description: JSON.stringify(SUCCESS_RESPONSE) })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Medicine not found' })
   @ApiParam({ name: 'medicineId', type: String })
-  @ApiBody({ type: CreateStockDto })
+  @ApiBody({ type: UpdateStockDto })
   update(
     @Param('medicineId', ParseUUIDPipe) medicineId: string,
     @Body() updateStockDto: UpdateStockDto,
@@ -60,7 +61,7 @@ export class StockController {
 
   @Patch(':medicineId/add/:quantity')
   @ApiOperation({ summary: 'Adicionar ao estoque por ID do medicamento' })
-  @ApiResponse({ status: 200, description: '{ success: true }' })
+  @ApiResponse({ status: 200, description: JSON.stringify(SUCCESS_RESPONSE) })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Medicine not found' })
   @ApiParam({ name: 'medicineId', type: String })
@@ -68,14 +69,14 @@ export class StockController {
   async addToStock(
     @Param('medicineId', ParseUUIDPipe) medicineId: string,
     @Param('quantity') quantity: number,
-  ): Promise<void> {
+  ): Promise<SuccessResponse> {
     const medicine = await this.medicineService.findOne(medicineId);
-    await this.stockService.addToStock(medicine, +quantity);
+    return await this.stockService.addToStock(medicine, +quantity);
   }
 
   @Patch(':medicineId/remove/:quantity')
   @ApiOperation({ summary: 'Remover do estoque por ID do medicamento' })
-  @ApiResponse({ status: 200, description: '{ success: true }' })
+  @ApiResponse({ status: 200, description: JSON.stringify(SUCCESS_RESPONSE) })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Medicine not found' })
   @ApiParam({ name: 'medicineId', type: String })
@@ -83,7 +84,7 @@ export class StockController {
   async removeFromStock(
     @Param('medicineId', ParseUUIDPipe) medicineId: string,
     @Param('quantity') quantity: number,
-  ): Promise<void> {
-    await this.stockService.removeFromStock(medicineId, +quantity);
+  ): Promise<SuccessResponse> {
+    return await this.stockService.removeFromStock(medicineId, +quantity);
   }
 }

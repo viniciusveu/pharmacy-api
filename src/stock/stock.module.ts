@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Module, forwardRef } from '@nestjs/common';
 import { StockService } from './stock.service';
 import { StockController } from './stock.controller';
